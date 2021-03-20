@@ -6,7 +6,7 @@
 
 package personal.opensrcerer.actions;
 
-import personal.opensrcerer.managers.RequestManager;
+import personal.opensrcerer.util.RequestDispatcher;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -58,7 +58,7 @@ public class RollRequest implements Request {
             }
         }
 
-        RequestManager.queueRequest(this);
+        RequestDispatcher.queueRequest(this);
     }
 
     @Override

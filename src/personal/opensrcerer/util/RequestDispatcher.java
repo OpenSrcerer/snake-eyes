@@ -4,7 +4,7 @@
  * GNU © 2020 Daniel Stefani / OpenSrcerer
  */
 
-package personal.opensrcerer.managers;
+package personal.opensrcerer.util;
 
 import personal.opensrcerer.actions.Request;
 
@@ -13,15 +13,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * This class manages every request that gets
- * sent to the queue. By only having one spot open and
- * a dedicated thread, it allows one request at a time
- * to have independency from the GUI.
+ * This class executes every request that gets
+ * sent to the queue. By using an ExecutorService it allows for independence from the GUI thread.
  *
- * This class is actually built for more threads but is currently
- * only using one thread.
+ * RequestDispatcher is actually built for more threads but is currently only using one thread.
  */
-public final class RequestManager {
+public final class RequestDispatcher {
 
     /**
      * ExecutorService to manage one request at a time.
@@ -34,22 +31,20 @@ public final class RequestManager {
     private static final LinkedBlockingQueue<Request> requests = new LinkedBlockingQueue<>(1);
 
     static {
-        // Runnable that gets parked to wait for requests.
+        // Spinning code that awaits requests to be put into the queue.
         Runnable runRequests = () -> {
             while (true) {
-                Request request = null;
-
-                try {
-                    request = requests.take();
-                } catch (InterruptedException ex) {
-                    System.out.println("Thread interrupted! Program shutdown expected.");
-                }
-
-                if (request == null) {
+                if (Thread.interrupted()) {
+                    System.out.println("Bye bye!");
                     return;
                 }
 
-                request.run();
+                try {
+                    Request request = requests.take();
+                    request.run();
+                } catch (Exception | Error e) {
+                    e.printStackTrace();
+                }
             }
         };
 
@@ -59,6 +54,7 @@ public final class RequestManager {
 
     /**
      * Adds the request to the requests array of active requests.
+     * Dumps the request if it is beyond the queue' capacity.
      * @param request Request to be added.
      */
     public static void queueRequest(Request request) {

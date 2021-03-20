@@ -9,6 +9,7 @@ package personal.opensrcerer;
 import personal.opensrcerer.userInterface.MainWindow;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 /**
  * <h2>A Calculation Multitool</h2>

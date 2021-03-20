@@ -4,7 +4,7 @@
  * GNU © 2020 Daniel Stefani / OpenSrcerer
  */
 
-package personal.opensrcerer.userInterface.panels;
+package personal.opensrcerer.util;
 
 /**
  * This enum is used to distinguish button types,

@@ -4,19 +4,21 @@
  * GNU © 2020 Daniel Stefani / OpenSrcerer
  */
 
-package personal.opensrcerer.userInterface;
+package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.RunProject;
 import personal.opensrcerer.actions.RollRequest;
-import personal.opensrcerer.managers.RequestManager;
-import personal.opensrcerer.userInterface.panels.ButtonType;
+import personal.opensrcerer.util.RequestDispatcher;
+import personal.opensrcerer.userInterface.MainWindow;
+import personal.opensrcerer.util.ButtonType;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -44,6 +46,10 @@ public final class PanelComponents {
     private static final Font actionFont = new Font("Arial", Font.BOLD, 15);
     private static final Font outputFont = new Font("Arial", Font.ITALIC, 13);
     // -------------------------------------------
+
+    // -------- Images --------
+    private static Image[] imagesList;
+    // ------------------------
 
     /**
      * Retrieves a custom JButton.
@@ -73,6 +79,17 @@ public final class PanelComponents {
         setMouseListener(button);
         button.addActionListener(getListener(type, button, arg));
         return button;
+    }
+
+    /**
+     * Retrieves a custom Border.
+     * @param borderTitle Title of border.
+     * @return Customized Border.
+     */
+    public static Border getBorder(String borderTitle) {
+        Border templateborder = BorderFactory.createLineBorder(discordLightGray, 3, true);
+        return BorderFactory.createTitledBorder(templateborder, borderTitle,
+                TitledBorder.CENTER, TitledBorder.BOTTOM, descriptionFont, discordLightGray);
     }
 
     /**
@@ -182,21 +199,16 @@ public final class PanelComponents {
     }
 
     /**
-     * @param imgName Name of image (with file extension).
+     * @param dieNumber Number of the die to use.
      * @return A custom JLabel that is constructed with
      * an image instead of text.
      */
-    public static JLabel getImageLabel(String imgName) {
-        Image myPicture;
-        try {
-            myPicture = getImage(imgName);
-        } catch (IOException | NullPointerException ex) {
-            return getLabel("[Image]", descriptionFont);
+    public static JLabel getImageLabel(int dieNumber) {
+        if (dieNumber < 1 || dieNumber > 6) {
+            throw new IllegalArgumentException("Invalid die number");
         }
-
-        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        JLabel picLabel = new JLabel(new ImageIcon(imagesList[dieNumber]));
         picLabel.setBackground(discordGrayer);
-
         return picLabel;
     }
 
@@ -211,21 +223,6 @@ public final class PanelComponents {
         panel.add(getButton(buttonName, type));
         panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
         return panel;
-    }
-
-    /**
-     * @return A custom progress bar.
-     */
-    public static JProgressBar getProgressBar() {
-        JProgressBar bar = new JProgressBar();
-        bar.setPreferredSize(new Dimension(250, 25));
-        bar.setMinimum(0);
-        bar.setMaximum(100);
-        bar.setOpaque(true);
-        bar.setBorderPainted(false);
-        bar.setBackground(discordGray);
-        bar.setForeground(Color.RED);
-        return bar;
     }
 
     /**
@@ -273,38 +270,19 @@ public final class PanelComponents {
     }
 
     /**
-     * @param imgName Name of image (with file extension)
-     * @return Image object with an image retrieved from the resources project dir.
+     * Initializes all images retrieved from the resources project dir and dumps them into an array for later usage.
      * @throws IOException If something went wrong with the Input Stream while grabbing image.
      * @throws NullPointerException If retrieved image is null.
      */
-    public static Image getImage(String imgName) throws IOException, NullPointerException {
-        BufferedImage image;
+    public static void initializeImages() throws IOException, NullPointerException {
+        imagesList = new Image[6];
 
-        InputStream imageStream = RunProject.class.getClassLoader().getResourceAsStream(imgName);
-        if (imageStream == null)
-            throw new NullPointerException();
-        image = ImageIO.read(imageStream);
-
-        return image;
-    }
-
-    /**
-     * Takes in a number of JPanels and sets
-     * their background to discordGrayer.
-     *
-     * @param panels JPanels to change background
-     *               colors of.
-     *
-     * @deprecated Due to the getJPanel method
-     * setting a custom background color
-     * background without the need of
-     * this method.
-     */
-    @Deprecated
-    public static void setBackgrounds(JPanel... panels) {
-        for (JPanel panel : panels) {
-            panel.setBackground(discordGrayer);
+        for (int index = 0; index < 6; ++index) {
+            // Retrieve a resource stream using a base class as a reference point.
+            InputStream imageStream = RunProject.class.getResource("/resources/die" + (index + 1) + ".png").openStream();
+            if (imageStream == null)
+                throw new NullPointerException();
+            imagesList[index] = ImageIO.read(imageStream);
         }
     }
 
@@ -374,7 +352,7 @@ public final class PanelComponents {
             case EXIT -> {
                 return e -> {
                     MainWindow.disposeJFrame();
-                    RequestManager.killExecutor();
+                    RequestDispatcher.killExecutor();
                 };
             }
             default -> throw new IllegalArgumentException("Invalid button type provided");
