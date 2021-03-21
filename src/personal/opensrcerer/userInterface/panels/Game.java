@@ -1,12 +1,16 @@
 package personal.opensrcerer.userInterface.panels;
 
+import personal.opensrcerer.RunProject;
 import personal.opensrcerer.util.ButtonType;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
-public class Roll {
+public class Game {
     public static void setComponents(final Container pane) {
         JPanel totalLayout = PanelComponents.getJPanel(new GridLayout(1, 2));
         JPanel userPanel = PanelComponents.getJPanel(BoxLayout.Y_AXIS);

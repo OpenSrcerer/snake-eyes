@@ -6,10 +6,13 @@
 
 package personal.opensrcerer.userInterface;
 
+import personal.opensrcerer.RunProject;
 import personal.opensrcerer.userInterface.panels.PanelComponents;
-import personal.opensrcerer.userInterface.panels.Roll;
 import personal.opensrcerer.userInterface.panels.Start;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,7 +32,6 @@ public final class MainWindow extends JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        Roll.setComponents(getContentPane());
     }
 
     /**
@@ -43,11 +45,22 @@ public final class MainWindow extends JFrame {
         Start.setComponents(window.getContentPane());
         // Pack the window so that the components
         // get their preferred size assigned.
-        window.pack();
-        // Center the window on the middle of the screen
-        window.setLocationRelativeTo(null);
+        updateJFrame();
+        // Make window non-resizable
+        window.setResizable(false);
         // Display the window.
         window.setVisible(true);
+
+        /*
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(RunProject.class.getResource("/resources/music.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+            clip.loop(Integer.MAX_VALUE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }*/
     }
 
     /**
@@ -58,18 +71,13 @@ public final class MainWindow extends JFrame {
     }
 
     /**
-     * Packs JFrame so that every element fits to
-     * its preferred size.
+     * Packs, revalidates and repaints the JFrame to correctly fit a new layout.
      */
-    public static void packJFrame() {
-        window.pack();
-    }
-
-    /**
-     * Repaints JFrame for every component in it to reload.
-     */
-    public static void repaintJFrame() {
+    public static void updateJFrame() {
+        window.pack(); // Fit size of JFrame
+        window.revalidate(); // Mark JFrame as "dirty"
         window.repaint();
+        window.setLocationRelativeTo(null); // Center window
     }
 
     /**

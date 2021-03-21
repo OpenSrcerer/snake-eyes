@@ -9,32 +9,17 @@ package personal.opensrcerer;
 import personal.opensrcerer.userInterface.MainWindow;
 
 import javax.swing.*;
-import java.util.Arrays;
 
 /**
- * <h2>A Calculation Multitool</h2>
+ * <h2>Snake Eyes Game</h2>
  *
  * <p>A Java program that fulfills specific requests as required in the Final Course Project Description PDF.<br></p>
- *
- * <h3>Available Calculations:</h3>
- * <ul>
- *     <li>Exact cubes</li>
- *     <li>Factorial of the average</li>
- *     <li>Stats of random integers</li>
- *     <li>Number guessing game</li>
- *     <li>Palindrome detection</li>
- *     <li>Pythagorean triples</li>
- * </ul>
- *
  * <br>
- * <h3>Made for the Final Project in CS105, due December 4th 2020. <br> This work is licensed under the GNU General Public License v3.0</h3>
- * <h3>Note: Special permission has been granted to me by
- * Dr. Alexander Astaras to bypass the project's requirements. <br>
- * Instead of using a text-based menu, I have programmed a GUI.</h3>
+ * <h3>Made for the Final Project in CS106, due April 1st 2021. <br> This work is licensed under the GNU General Public License v3.0</h3>
  *
  * @author Daniel Stefani (OpenSrcerer)
  * @version 0.0.1
- * @since 2020-11-12
+ * @since 2020-03-20
  */
 
 public class RunProject {

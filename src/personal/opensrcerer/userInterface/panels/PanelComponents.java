@@ -8,19 +8,16 @@ package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.RunProject;
 import personal.opensrcerer.actions.RollRequest;
-import personal.opensrcerer.util.RequestDispatcher;
 import personal.opensrcerer.userInterface.MainWindow;
 import personal.opensrcerer.util.ButtonType;
+import personal.opensrcerer.util.RequestDispatcher;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This class is used to retrieve custom stylized JComponents
@@ -48,7 +45,7 @@ public final class PanelComponents {
     // -------------------------------------------
 
     // -------- Images --------
-    private static Image[] imagesList;
+    private static ImageIcon[] imagesList;
     // ------------------------
 
     /**
@@ -199,15 +196,36 @@ public final class PanelComponents {
     }
 
     /**
-     * @param dieNumber Number of the die to use.
+     * @param imageNumber Number of the image to use.
      * @return A custom JLabel that is constructed with
      * an image instead of text.
      */
-    public static JLabel getImageLabel(int dieNumber) {
-        if (dieNumber < 1 || dieNumber > 6) {
-            throw new IllegalArgumentException("Invalid die number");
+    public static JLabel getImageLabel(int imageNumber) {
+        if (imageNumber < 0 || imageNumber > 6) {
+            throw new IllegalArgumentException("Invalid image");
         }
-        JLabel picLabel = new JLabel(new ImageIcon(imagesList[dieNumber]));
+        JLabel picLabel = new JLabel(imagesList[imageNumber]);
+        picLabel.setBackground(discordGrayer);
+        return picLabel;
+    }
+
+    /**
+     * @return A custom JLabel that is constructed with
+     * a gif instead of text.
+     */
+    public static JLabel getLogo() {
+        JLabel picLabel = new JLabel(imagesList[6]);
+        picLabel.setBackground(discordGrayer);
+        picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return picLabel;
+    }
+
+    /**
+     * @return A custom JLabel that is constructed with
+     * a gif instead of text.
+     */
+    public static JLabel getSpeakerUnmute() {
+        JLabel picLabel = new JLabel(imagesList[7]);
         picLabel.setBackground(discordGrayer);
         return picLabel;
     }
@@ -220,7 +238,9 @@ public final class PanelComponents {
      */
     public static JPanel getBorderedButton(String buttonName, ButtonType type) {
         JPanel panel = new JPanel(new GridLayout(1, 1));
-        panel.add(getButton(buttonName, type));
+        JButton button = getButton(buttonName, type);
+        button.setFocusPainted(false);
+        panel.add(button);
         panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
         return panel;
     }
@@ -271,19 +291,17 @@ public final class PanelComponents {
 
     /**
      * Initializes all images retrieved from the resources project dir and dumps them into an array for later usage.
-     * @throws IOException If something went wrong with the Input Stream while grabbing image.
      * @throws NullPointerException If retrieved image is null.
      */
-    public static void initializeImages() throws IOException, NullPointerException {
-        imagesList = new Image[6];
-
+    public static void initializeImages() {
+        imagesList = new ImageIcon[8];
         for (int index = 0; index < 6; ++index) {
             // Retrieve a resource stream using a base class as a reference point.
-            InputStream imageStream = RunProject.class.getResource("/resources/die" + (index + 1) + ".png").openStream();
-            if (imageStream == null)
-                throw new NullPointerException();
-            imagesList[index] = ImageIO.read(imageStream);
+            imagesList[index] = new ImageIcon(RunProject.class.getResource("/resources/die" + (index + 1) + ".png"));
         }
+
+        imagesList[6] = new ImageIcon(RunProject.class.getResource("/resources/logo.png"));
+        imagesList[7] = new ImageIcon(RunProject.class.getResource("/resources/speaker32.png"));
     }
 
     /**
@@ -325,8 +343,7 @@ public final class PanelComponents {
     }
 
     /**
-     * Retrieves a listener according to what a specific
-     * button should do when clicked.
+     * Retrieves a listener according to what a specific button should do when clicked.
      * Used for GUI switch listeners.
      * @param type Type of button.
      * @return An ActionListener according to the button type.
@@ -339,29 +356,27 @@ public final class PanelComponents {
         //        Set specific components from the panels package
         //        Pack JFrame & Repaint
 
-        switch (type) {
-            case HELP -> {
-                return e -> {
-                    MainWindow.getWindowPane().removeAll();
-                    MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-                    // Help.setComponents(MainWindow.getWindowPane());
-                    MainWindow.packJFrame();
-                    MainWindow.repaintJFrame();
-                };
-            }
-            case EXIT -> {
-                return e -> {
+        return switch (type) {
+            case HELP, CREDITS -> e -> {
+                // TODO
+                MainWindow.updateJFrame();
+            };
+            case START -> e -> {
+                MainWindow.getWindowPane().removeAll();
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
+                Game.setComponents(MainWindow.getWindowPane());
+                MainWindow.updateJFrame();
+            };
+            case EXIT -> e -> {
                     MainWindow.disposeJFrame();
                     RequestDispatcher.killExecutor();
-                };
-            }
+            };
             default -> throw new IllegalArgumentException("Invalid button type provided");
-        }
+        };
     }
 
     /**
-     * Retrieves a listener according to what a specific
-     * button should do when clicked.
+     * Retrieves a listener according to what a specific button should do when clicked.
      * Used for GUI request listeners.
      * @param type Type of button
      * @param button Target button
