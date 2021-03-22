@@ -10,6 +10,7 @@ import personal.opensrcerer.RunProject;
 import personal.opensrcerer.actions.RollRequest;
 import personal.opensrcerer.userInterface.MainWindow;
 import personal.opensrcerer.util.ButtonType;
+import personal.opensrcerer.util.JPlayer;
 import personal.opensrcerer.util.RequestDispatcher;
 
 import javax.swing.*;
@@ -19,7 +20,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class is used to retrieve custom stylized JComponents
@@ -40,6 +43,7 @@ public final class PanelComponents {
             discordGray = new Color(54, 57, 63),
             discordGrayer = new Color(47, 49, 54);
 
+    public static final Font bigTitleFont = new Font("Century Gothic", Font.BOLD, 40);
     public static final Font titleFont = new Font("Century Gothic", Font.BOLD, 20);
     public static final Font descriptionFont = new Font("Century Gothic", Font.PLAIN, 14);
     private static final Font actionFont = new Font("Arial", Font.BOLD, 15);
@@ -86,9 +90,17 @@ public final class PanelComponents {
      * @return Customized Border.
      */
     public static Border getBorder(String borderTitle) {
-        Border templateborder = BorderFactory.createLineBorder(discordLightGray, 3, true);
+        Border templateborder = BorderFactory.createLineBorder(discordLightGray, 2, true);
         return BorderFactory.createTitledBorder(templateborder, borderTitle,
-                TitledBorder.CENTER, TitledBorder.BOTTOM, descriptionFont, discordLightGray);
+                TitledBorder.CENTER, TitledBorder.TOP, descriptionFont, discordLightGray);
+    }
+
+    /**
+     * Retrieves a custom dashed Border.
+     * @return Customized Border.
+     */
+    public static Border getBorder() {
+        return BorderFactory.createDashedBorder(discordLightGray, 2, 5, 5, false);
     }
 
     /**
@@ -98,12 +110,55 @@ public final class PanelComponents {
      * @param button Button to change.
      */
     public static void setButtonPalette(String buttonName, JButton button) {
-        button.setText("<html>" + buttonName + "</html>");
+        button.setText("<html><p style=\"text-align:center\">" + buttonName + "</p></html>");
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setBackground(discordGray);
         button.setForeground(discordLightGray);
         button.setFont(actionFont);
+    }
+
+    /**
+     * A generified function that creates a custom JComboBox.
+     * @param selections Number of selections on the JComboBox.
+     * @param <W> Type of data that this JComboBox holds.
+     * @return A Custom JComboBox.
+     */
+    public static <W> JComboBox<W> getComboBox(W[] selections) {
+        JComboBox<W> box = new JComboBox<>(selections);
+        box.setBackground(discordGrayer);
+        box.setFont(descriptionFont);
+        return box;
+    }
+
+    /**
+     * A generified function that creates a custom JComboBox.
+     * @param selections Number of selections on the JComboBox.
+     * @param playerList List of players before starting. (GUI Element)
+     * @param <W> Type of data that this JComboBox holds.
+     * @return A JComboBox that updates the number of players on the given JPanel player board.
+     */
+    public static <W> JComboBox<W> getPlayerComboBox(W[] selections, JPanel playerList) {
+        JComboBox<W> box = new JComboBox<>(selections);
+        box.setBackground(discordGrayer);
+        box.setFont(descriptionFont);
+        box.addActionListener(e -> {
+            playerList.removeAll();
+            int selection = box.getSelectedIndex() + 1;
+            JPlayer[] players = new JPlayer[selection];
+
+            for (int index = 0; index < selection; ++index) {
+                JPlayer newPlayer = new JPlayer(index + 1);
+                players[index] = newPlayer;
+                playerList.add(newPlayer);
+            }
+
+            MainWindow.setPlayers(players);
+            playerList.revalidate();
+            playerList.repaint();
+        });
+
+        return box;
     }
 
     /**
@@ -152,23 +207,6 @@ public final class PanelComponents {
     }
 
     /**
-     * @param rows Number of rows JTextArea will be constructed with.
-     * @param cols Number of columns JTextArea will be constructed with.
-     * @return A custom themed JTextArea.
-     */
-    public static JTextArea getTextArea(int rows, int cols) {
-        JTextArea area = new JTextArea(rows, cols);
-        area.setFont(outputFont);
-        area.setBackground(discordGrayer);
-        area.setForeground(discordLightGray);
-        area.setPreferredSize(new Dimension(200, 200));
-        area.setLineWrap(true);
-        area.setWrapStyleWord(true);
-        area.setEditable(false);
-        return area;
-    }
-
-    /**
      * @param defaultText Default placeholder text for JTextField.
      * @param cols Number of columns JTextField will be constructed with.
      * @return A custom themed JTextField.
@@ -203,8 +241,8 @@ public final class PanelComponents {
      * an image instead of text.
      */
     public static JLabel getImageLabel(int imageNumber) {
-        if (imageNumber < 0 || imageNumber > 6) {
-            throw new IllegalArgumentException("Invalid image");
+        if (imageNumber < 0 || imageNumber > imagesList.length - 1) {
+            throw new IllegalArgumentException("Invalid image index");
         }
         JLabel picLabel = new JLabel(imagesList[imageNumber]);
         picLabel.setBackground(discordGrayer);
@@ -217,6 +255,17 @@ public final class PanelComponents {
      */
     public static JLabel getLogo() {
         JLabel picLabel = new JLabel(imagesList[6]);
+        picLabel.setBackground(discordGrayer);
+        picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return picLabel;
+    }
+
+    /**
+     * @return A custom JLabel that is constructed with
+     * a gif instead of text.
+     */
+    public static JLabel getSkeletonLogo() {
+        JLabel picLabel = new JLabel(imagesList[9]);
         picLabel.setBackground(discordGrayer);
         picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return picLabel;
@@ -244,6 +293,63 @@ public final class PanelComponents {
         return speaker;
     }
 
+    /**
+     * @param playerName Name of player whose turn it is.
+     * @return The Dice panel component.
+     */
+    public static JPanel getDicePanel(String playerName) {
+        JLabel die1 = getImageLabel(10),
+                die2 = getImageLabel(10),
+                die3 = getImageLabel(10),
+                die4 = getImageLabel(10);
+
+        JPanel allDies = getJPanel(BoxLayout.PAGE_AXIS);
+        JPanel pointDies = getJPanel(BoxLayout.LINE_AXIS);
+        JPanel rollDies = getJPanel(BoxLayout.LINE_AXIS);
+
+        pointDies.add(Box.createRigidArea(new Dimension(20, 0))); // Side spacing L
+        pointDies.add(die1);
+        pointDies.add(Box.createRigidArea(new Dimension(20, 0))); // Inbetween spacing
+        pointDies.add(die2);
+        pointDies.add(Box.createRigidArea(new Dimension(20, 0))); // Side spacing R
+
+        rollDies.add(die3);
+        rollDies.add(Box.createRigidArea(new Dimension(20, 0))); // Inbetween spacing
+        rollDies.add(die4);
+
+        allDies.add(Box.createRigidArea(new Dimension(0, 20))); // Top Spacing
+        allDies.add(getLabel(playerName + "'s Point Dice: ", titleFont));
+        allDies.add(pointDies);
+        allDies.add(Box.createRigidArea(new Dimension(0, 20))); // Inbetween spacing
+        allDies.add(getLabel(playerName + "'s Current Dice: ", titleFont));
+        allDies.add(rollDies);
+        allDies.add(Box.createRigidArea(new Dimension(0, 20))); // Bottom Spacing
+        allDies.setBorder(getBorder());
+
+        return allDies;
+    }
+
+    /**
+     * @param round The current round.
+     * @return A fully working and modular JPanel scoreboard.
+     */
+    public static JPanel getScoreboard(int round) {
+        JPanel outerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
+        JPanel innerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
+        outerScoreboard.add(Box.createRigidArea(new Dimension(350, 10)));
+
+        List<JPlayer> sortedPlayers = Arrays.stream(MainWindow.getPlayers()).sorted((a, b) -> b.getScore() - a.getScore()).collect(Collectors.toList());
+        for (JPlayer player : sortedPlayers) {
+            innerScoreboard.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));
+            innerScoreboard.add(Box.createRigidArea(new Dimension(200, 10)));
+        }
+        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - (MainWindow.getPlayers().length * 37))));
+        innerScoreboard.setBorder(getBorder("Scoreboard // Round " + round));
+        outerScoreboard.add(innerScoreboard);
+        outerScoreboard.add(Box.createRigidArea(new Dimension(0, 20)));
+        return outerScoreboard;
+    }
+
     public static JSlider getSlider() {
         JSlider slider = new JSlider();
         slider.setMaximum(100);
@@ -260,6 +366,23 @@ public final class PanelComponents {
             }
 
             float volume = slider.getValue() / 100f;
+
+            if (volume == 0f) {
+                JPanel musicPanel = MainWindow.getMusicPanel();
+                musicPanel.removeAll();
+                musicPanel.add(slider);
+                // TODO bug with disappearing mute button
+                musicPanel.revalidate();
+                musicPanel.repaint();
+            } else if (volume > 0f & MainWindow.isMute()) {
+                JPanel musicPanel = MainWindow.getMusicPanel();
+                musicPanel.removeAll();
+                musicPanel.add(slider);
+                musicPanel.add(PanelComponents.getSpeakerUnmute());
+                musicPanel.revalidate();
+                musicPanel.repaint();
+            }
+
             MainWindow.setVolume(volume);
         });
 
@@ -282,6 +405,44 @@ public final class PanelComponents {
     }
 
     /**
+     * @see ButtonType
+     * @return A custom button inside a JPanel that has a border.
+     */
+    public static JPanel getRollButton() {
+        JPanel panel = new JPanel(new GridLayout(1, 1));
+        JButton button = new JButton(imagesList[11]);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        setButtonPalette("", button);
+        setMouseListener(button);
+        button.addActionListener(getListener(ButtonType.ROLL));
+        button.setFocusPainted(false);
+        panel.add(button);
+        panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
+        return panel;
+    }
+
+    /**
+     * @param round Current round.
+     * @param playerName The player whose turn it is.
+     * @return The bottom panel containing volume controls and other info.
+     */
+    public static JPanel getTopPanel(int round, String playerName) {
+        JPanel bottomPanel = PanelComponents.getJPanel();
+        bottomPanel.add(getLabel("Round " + round + " // Roll, " + playerName + "!", bigTitleFont), BorderLayout.CENTER);
+        return bottomPanel;
+    }
+
+    /**
+     * @return The bottom panel containing volume controls and other info.
+     */
+    public static JPanel getBottomPanel() {
+        JPanel bottomPanel = PanelComponents.getJPanel(new BorderLayout());
+        bottomPanel.add(MainWindow.getMusicPanel(), BorderLayout.EAST);
+        bottomPanel.add(PanelComponents.getLabel("  v0.0.1", descriptionFont), BorderLayout.WEST);
+        return bottomPanel;
+    }
+
+    /**
      * @param name Text attached to set box.
      * @param isSelected Whether the checkbox is originally
      *                   checked or not.
@@ -296,49 +457,21 @@ public final class PanelComponents {
     }
 
     /**
-     * @param interactionHolder JPanel that represents
-     *                          the area that the user
-     *                          interacts with.
-     * @param outputArea JTextArea where the output of
-     *                   the calculations will go.
-     * @return A JSplitPane comprising of the interactive part
-     * of the UI, and the output part of the UI.
-     */
-    public static JSplitPane getSplitPane(JPanel interactionHolder, JTextArea outputArea) {
-        // Create a scroll pane as holder for the output
-        final JPanel scrollHolder = getJPanel(new GridLayout());
-        final JScrollPane scroll = new JScrollPane(
-                outputArea,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-        );
-        scroll.setBackground(discordGray);
-        scrollHolder.add(scroll);
-
-        JSplitPane splitPane = new JSplitPane(
-                JSplitPane.VERTICAL_SPLIT,
-                interactionHolder, scrollHolder
-        );
-        splitPane.setEnabled(false);
-        splitPane.setDividerSize(1);
-
-        return splitPane;
-    }
-
-    /**
      * Initializes all images retrieved from the resources project dir and dumps them into an array for later usage.
      * @throws NullPointerException If retrieved image is null.
      */
     public static void initializeImages() {
-        imagesList = new ImageIcon[9];
+        imagesList = new ImageIcon[12];
         for (int index = 0; index < 6; ++index) {
             // Retrieve a resource stream using a base class as a reference point.
             imagesList[index] = new ImageIcon(RunProject.class.getResource("/resources/die" + (index + 1) + ".png"));
         }
-
         imagesList[6] = new ImageIcon(RunProject.class.getResource("/resources/logo.png"));
         imagesList[7] = new ImageIcon(RunProject.class.getResource("/resources/speaker32.png"));
         imagesList[8] = new ImageIcon(RunProject.class.getResource("/resources/speaker32m.png"));
+        imagesList[9] = new ImageIcon(RunProject.class.getResource("/resources/skelly.png"));
+        imagesList[10] = new ImageIcon(RunProject.class.getResource("/resources/dieq.png"));
+        imagesList[11] = new ImageIcon(RunProject.class.getResource("/resources/flamingdice.png"));
     }
 
     /**
@@ -401,23 +534,23 @@ public final class PanelComponents {
 
             @Override
             public void mouseClicked(MouseEvent evt) {
+                JPanel musicPanel = MainWindow.getMusicPanel();
+                JSlider slider = PanelComponents.getSlider();
+
+                musicPanel.removeAll();
                 if (MainWindow.isMute()) {
                     MainWindow.setVolume(0.25f);
-                    Start.bottomPanelSide.removeAll();
-                    JSlider slider = PanelComponents.getSlider();
                     slider.setValue(25);
-                    Start.bottomPanelSide.add(slider);
-                    Start.bottomPanelSide.add(PanelComponents.getSpeakerUnmute());
+                    musicPanel.add(slider);
+                    musicPanel.add(PanelComponents.getSpeakerUnmute());
                 } else {
                     MainWindow.setVolume(0f);
-                    Start.bottomPanelSide.removeAll();
-                    JSlider slider = PanelComponents.getSlider();
                     slider.setValue(0);
-                    Start.bottomPanelSide.add(slider);
-                    Start.bottomPanelSide.add(PanelComponents.getSpeakerMute());
+                    musicPanel.add(slider);
+                    musicPanel.add(PanelComponents.getSpeakerMute());
                 }
-                Start.bottomPanelSide.revalidate();
-                Start.bottomPanelSide.repaint();
+                musicPanel.revalidate();
+                musicPanel.repaint();
             }
         });
     }
@@ -437,7 +570,7 @@ public final class PanelComponents {
         //        Pack JFrame & Repaint
 
         return switch (type) {
-            case HELP, CREDITS -> e -> {
+            case HELP, CREDITS, ROLL -> e -> {
                 // TODO
                 MainWindow.updateJFrame();
             };
@@ -451,7 +584,6 @@ public final class PanelComponents {
                     MainWindow.disposeJFrame();
                     RequestDispatcher.killExecutor();
             };
-            default -> throw new IllegalArgumentException("Invalid button type provided");
         };
     }
 

@@ -9,6 +9,7 @@ package personal.opensrcerer.userInterface;
 import personal.opensrcerer.RunProject;
 import personal.opensrcerer.userInterface.panels.PanelComponents;
 import personal.opensrcerer.userInterface.panels.Start;
+import personal.opensrcerer.util.JPlayer;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -27,19 +28,38 @@ public final class MainWindow extends JFrame {
     private static MainWindow window;
 
     /**
+     * An array that contains all the players in the game.
+     */
+    private static JPlayer[] allPlayers;
+
+    /**
+     * The JPanel used globally on the bottom bar that manages music.
+     */
+    private static JPanel musicPanel;
+
+    /**
      * The Audio Clip that loops in the program.
      */
     private Clip clip;
 
     public MainWindow() {
         super("The One and Only Snake Eyes Game");
+
         clip = null;
         try {
+            // Initialize Audio
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(RunProject.class.getResource("/resources/music.wav"));
             clip = AudioSystem.getClip();
             clip.open(audioIn);
+            // Initialize used images
             PanelComponents.initializeImages();
+            // Set singleton item
             window = this;
+            // Set the singleton panel
+            musicPanel = PanelComponents.getJPanel();
+            musicPanel.add(PanelComponents.getSlider());
+            musicPanel.add(PanelComponents.getSpeakerUnmute());
+            // Show the GUI
             createAndShowGUI();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -65,6 +85,27 @@ public final class MainWindow extends JFrame {
 
         clip.start();
         clip.loop(Integer.MAX_VALUE);
+    }
+
+    /**
+     * Update the array of players with new ones.
+     */
+    public static void setPlayers(JPlayer[] players) {
+        allPlayers = players;
+    }
+
+    /**
+     * @return An array of all JPlayers.
+     */
+    public static JPlayer[] getPlayers() {
+        return allPlayers;
+    }
+
+    /**
+     * @return The MusicPanel for this window.
+     */
+    public static JPanel getMusicPanel() {
+        return musicPanel;
     }
 
     /**

@@ -1,91 +1,71 @@
 package personal.opensrcerer.userInterface.panels;
 
+import personal.opensrcerer.userInterface.MainWindow;
 import personal.opensrcerer.util.ButtonType;
 import personal.opensrcerer.util.JPlayer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+
+import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
 public class Start {
 
-    private static final Integer[] playerChoices = {1, 2, 3, 4, 5, 6, 7, 8};
-
-    public static JPlayer[] allPlayers;
-    public static JPanel playerList;
-    public static JPanel bottomPanelSide;
-    private static JComboBox<Integer> playersBox;
+    private static JPanel playerList;
+    private static JComboBox<Integer> playersBox, roundsBox;
 
     public static void setComponents(final Container pane) {
-        JPanel titlePanel = PanelComponents.getJPanel(BoxLayout.PAGE_AXIS);
-        JPanel playersSelection = PanelComponents.getJPanel();
-        JPanel buttonPanel = PanelComponents.getJPanel(BoxLayout.LINE_AXIS);
-        JPanel playButton = PanelComponents.getBorderedButton("Play", ButtonType.START);
+        JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
+                selections = getJPanel(BoxLayout.PAGE_AXIS),
+                titlePanel = getJPanel(BoxLayout.PAGE_AXIS),
+                buttonPanel = getJPanel(BoxLayout.LINE_AXIS),
+                playButton = getBorderedButton("Play", ButtonType.START),
+                helpButton = getBorderedButton("Help", ButtonType.HELP),
+                creditsButton = getBorderedButton("Credits", ButtonType.CREDITS),
+                playersSelection = getJPanel(),
+                roundsSelection = getJPanel();
+
         playButton.setPreferredSize(new Dimension(75, 75));
-        JPanel helpButton = PanelComponents.getBorderedButton("Help", ButtonType.HELP);
         helpButton.setPreferredSize(new Dimension(75, 75));
-        JPanel creditsButton = PanelComponents.getBorderedButton("Credits", ButtonType.CREDITS);
         creditsButton.setPreferredSize(new Dimension(75, 75));
-        JLabel label = PanelComponents.getLabel("Number of players:", PanelComponents.titleFont);
-        JPanel totalPanel = PanelComponents.getJPanel(BoxLayout.PAGE_AXIS);
-        bottomPanelSide = PanelComponents.getJPanel();
-        JPanel bottomPanel = PanelComponents.getJPanel(new BorderLayout());
 
-        playerList = PanelComponents.getJPanel(BoxLayout.PAGE_AXIS);
+        playerList = getJPanel(BoxLayout.PAGE_AXIS);
         playerList.setPreferredSize(new Dimension(500, 320));
-        playerList.setBorder(PanelComponents.getBorder("Player List"));
+        playerList.setBorder(getBorder("Player List"));
 
-        playersBox = new JComboBox<>(playerChoices);
-        playersBox.addActionListener(playerListener());
+        playersBox = getPlayerComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}, playerList);
+        roundsBox = getComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
 
         // Add default player
         JPlayer defaultPlayer = new JPlayer(1);
+        MainWindow.setPlayers(new JPlayer[] { defaultPlayer });
         playerList.add(defaultPlayer);
-        allPlayers = new JPlayer[1];
-        allPlayers[0] = defaultPlayer;
 
         buttonPanel.add(helpButton);
         buttonPanel.add(playButton);
         buttonPanel.add(creditsButton);
 
-        playersSelection.add(label);
+        playersSelection.add(getLabel("Number of players:", titleFont));
         playersSelection.add(playersBox);
 
-        titlePanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        titlePanel.add(PanelComponents.getLogo());
-        titlePanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        roundsSelection.add(getLabel("Number of rounds:", titleFont));
+        roundsSelection.add(roundsBox);
 
-        bottomPanelSide.add(PanelComponents.getSlider());
-        bottomPanelSide.add(PanelComponents.getSpeakerUnmute());
+        selections.add(playersSelection);
+        selections.add(roundsSelection);
 
-        bottomPanel.add(bottomPanelSide, BorderLayout.EAST);
-        bottomPanel.add(PanelComponents.getLabel("  v0.0.1", PanelComponents.descriptionFont), BorderLayout.WEST);
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 15)));
+        titlePanel.add(getLogo());
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
         totalPanel.add(titlePanel);
-        totalPanel.add(PanelComponents.getSeparator());
+        totalPanel.add(getSeparator());
         totalPanel.add(buttonPanel);
-        totalPanel.add(PanelComponents.getSeparator());
-        totalPanel.add(playersSelection);
+        totalPanel.add(getSeparator());
+        totalPanel.add(selections);
         totalPanel.add(playerList);
-        totalPanel.add(bottomPanel);
+        totalPanel.add(getBottomPanel());
 
         pane.add(totalPanel);
-    }
-
-    private static ActionListener playerListener() {
-        return e -> {
-            playerList.removeAll();
-            int selection = playersBox.getSelectedIndex() + 1;
-            allPlayers = new JPlayer[selection];
-
-            for (int index = 0; index < selection; ++index) {
-                JPlayer newPlayer = new JPlayer(index + 1);
-                allPlayers[index] = newPlayer;
-                playerList.add(newPlayer);
-            }
-
-            playerList.revalidate();
-            playerList.repaint();
-        };
     }
 }

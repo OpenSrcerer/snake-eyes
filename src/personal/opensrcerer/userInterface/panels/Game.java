@@ -1,61 +1,46 @@
 package personal.opensrcerer.userInterface.panels;
 
-import personal.opensrcerer.RunProject;
-import personal.opensrcerer.util.ButtonType;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
+
+import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
 public class Game {
     public static void setComponents(final Container pane) {
-        JPanel totalLayout = PanelComponents.getJPanel(new GridLayout(1, 2));
-        JPanel userPanel = PanelComponents.getJPanel(BoxLayout.Y_AXIS);
-        JPanel buttonPanel = PanelComponents.getJPanel(BoxLayout.Y_AXIS);
-        JPanel diceSplitPanel = PanelComponents.getJPanel(BoxLayout.PAGE_AXIS);
-        JPanel playPanel = PanelComponents.getJPanel();
-        JPanel rollPanel = PanelComponents.getJPanel();
-        JPanel dicePanel1 = PanelComponents.getJPanel();
-        JPanel dicePanel2 = PanelComponents.getJPanel();
+        JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
+                scoreboardPanel = getJPanel(BoxLayout.PAGE_AXIS),
+                gamePanelSep = getJPanel(BoxLayout.PAGE_AXIS),
+                wholeSep = getJPanel(BoxLayout.LINE_AXIS),
+                gridPanel = getJPanel(new GridLayout(1, 3));
 
-        JLabel die1 = PanelComponents.getImageLabel(1),
-                die2 = PanelComponents.getImageLabel(2),
-                die3 = PanelComponents.getImageLabel(3),
-                die4 = PanelComponents.getImageLabel(4),
-                result = PanelComponents.getLabel("you are a loser.", PanelComponents.descriptionFont);
-        JButton playButton = PanelComponents.getButton("lose all money", ButtonType.HELP),
-                rollButton = PanelComponents.getButton("lose all money but later", ButtonType.HELP);
+        JSeparator sep = getSeparator();
+        sep.setOrientation(JSeparator.VERTICAL);
+        JSeparator sep2 = getSeparator();
+        sep2.setMaximumSize(new Dimension(350, 1));
+        sep2.setPreferredSize(new Dimension(350, 1));
 
-        Border diceBorder = PanelComponents.getBorder("gambling is bad. stop."),
-                resultBorder = PanelComponents.getBorder("Result");
-        result.setBorder(resultBorder);
+        // Left side of panel, scoreboard
+        scoreboardPanel.add(getSkeletonLogo());
+        scoreboardPanel.add(getScoreboard(1));
 
-        dicePanel1.add(die1);
-        dicePanel1.add(die2);
-        dicePanel1.setBorder(diceBorder);
+        gamePanelSep.add(Box.createRigidArea(new Dimension(0, 20)));
+        gamePanelSep.add(getDicePanel("Gambler"));
+        gamePanelSep.add(Box.createRigidArea(new Dimension(0, 20)));
+        gamePanelSep.add(sep2);
+        gamePanelSep.add(getRollButton());
 
-        dicePanel2.add(die3);
-        dicePanel2.add(die4);
+        wholeSep.add(sep);
+        wholeSep.add(gamePanelSep);
 
-        diceSplitPanel.add(dicePanel1);
-        diceSplitPanel.add(dicePanel2);
+        gridPanel.add(scoreboardPanel);
+        gridPanel.add(wholeSep);
 
-        playPanel.add(playButton);
-        rollPanel.add(rollButton);
+        totalPanel.add(getTopPanel(1, "Gambler"));
+        totalPanel.add(getSeparator());
+        totalPanel.add(gridPanel);
+        totalPanel.add(getSeparator());
+        totalPanel.add(getBottomPanel());
 
-        buttonPanel.add(playPanel);
-        buttonPanel.add(rollPanel);
-
-        userPanel.add(buttonPanel);
-        userPanel.add(result);
-        userPanel.add(Box.createRigidArea(new Dimension(0, 100)));
-
-        totalLayout.add(diceSplitPanel);
-        totalLayout.add(userPanel);
-
-        pane.add(totalLayout);
+        pane.add(totalPanel);
     }
 }
