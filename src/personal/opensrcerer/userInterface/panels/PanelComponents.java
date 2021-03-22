@@ -18,6 +18,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * This class is used to retrieve custom stylized JComponents
@@ -222,12 +224,46 @@ public final class PanelComponents {
 
     /**
      * @return A custom JLabel that is constructed with
-     * a gif instead of text.
+     * a png instead of text.
      */
     public static JLabel getSpeakerUnmute() {
-        JLabel picLabel = new JLabel(imagesList[7]);
-        picLabel.setBackground(discordGrayer);
-        return picLabel;
+        JLabel speaker = new JLabel(imagesList[7]);
+        speaker.setBackground(discordGrayer);
+        setSpeakerListener(speaker);
+        return speaker;
+    }
+
+    /**
+     * @return A custom JLabel that is constructed with
+     * a png instead of text.
+     */
+    public static JLabel getSpeakerMute() {
+        JLabel speaker = new JLabel(imagesList[8]);
+        speaker.setBackground(discordGrayer);
+        setSpeakerListener(speaker);
+        return speaker;
+    }
+
+    public static JSlider getSlider() {
+        JSlider slider = new JSlider();
+        slider.setMaximum(100);
+        slider.setMinimum(0);
+        slider.setValue(100);
+        slider.setExtent(2);
+        slider.setBackground(discordGrayer);
+        slider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        slider.setPreferredSize(new Dimension(50, 25));
+
+        slider.addChangeListener(e -> {
+            if (slider.getValueIsAdjusting()) {
+                return;
+            }
+
+            float volume = slider.getValue() / 100f;
+            MainWindow.setVolume(volume);
+        });
+
+        return slider;
     }
 
     /**
@@ -294,7 +330,7 @@ public final class PanelComponents {
      * @throws NullPointerException If retrieved image is null.
      */
     public static void initializeImages() {
-        imagesList = new ImageIcon[8];
+        imagesList = new ImageIcon[9];
         for (int index = 0; index < 6; ++index) {
             // Retrieve a resource stream using a base class as a reference point.
             imagesList[index] = new ImageIcon(RunProject.class.getResource("/resources/die" + (index + 1) + ".png"));
@@ -302,24 +338,27 @@ public final class PanelComponents {
 
         imagesList[6] = new ImageIcon(RunProject.class.getResource("/resources/logo.png"));
         imagesList[7] = new ImageIcon(RunProject.class.getResource("/resources/speaker32.png"));
+        imagesList[8] = new ImageIcon(RunProject.class.getResource("/resources/speaker32m.png"));
     }
 
     /**
-     * Function that sets a mouse listener to a button,
+     * Function that sets a mouse listener to a component,
      * that changes its background when mouse enters and exits
      * it.
-     * @param button The button to add a listener to.
+     * @param component The button to add a listener to.
      */
-    public static void setMouseListener(JButton button) {
-        button.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+    public static void setMouseListener(JComponent component) {
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
                 MainWindow.getWindowPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                button.setBackground(discordLessGray);
+                component.setBackground(discordLessGray);
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            @Override
+            public void mouseExited(MouseEvent evt) {
                 MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-                button.setBackground(discordGray);
+                component.setBackground(discordGray);
             }
         });
     }
@@ -332,12 +371,53 @@ public final class PanelComponents {
      */
     public static void setMouseListener(JTextField field) {
         field.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
                 MainWindow.getWindowPane().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            @Override
+            public void mouseExited(MouseEvent evt) {
                 MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
+            }
+        });
+    }
+
+    /**
+     * Function that sets a mouse listener to speaker labels.
+     * @param component The button to add a listener to.
+     */
+    public static void setSpeakerListener(JComponent component) {
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                MainWindow.getWindowPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (MainWindow.isMute()) {
+                    MainWindow.setVolume(0.25f);
+                    Start.bottomPanelSide.removeAll();
+                    JSlider slider = PanelComponents.getSlider();
+                    slider.setValue(25);
+                    Start.bottomPanelSide.add(slider);
+                    Start.bottomPanelSide.add(PanelComponents.getSpeakerUnmute());
+                } else {
+                    MainWindow.setVolume(0f);
+                    Start.bottomPanelSide.removeAll();
+                    JSlider slider = PanelComponents.getSlider();
+                    slider.setValue(0);
+                    Start.bottomPanelSide.add(slider);
+                    Start.bottomPanelSide.add(PanelComponents.getSpeakerMute());
+                }
+                Start.bottomPanelSide.revalidate();
+                Start.bottomPanelSide.repaint();
             }
         });
     }

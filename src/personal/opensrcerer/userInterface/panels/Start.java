@@ -13,6 +13,7 @@ public class Start {
 
     public static JPlayer[] allPlayers;
     public static JPanel playerList;
+    public static JPanel bottomPanelSide;
     private static JComboBox<Integer> playersBox;
 
     public static void setComponents(final Container pane) {
@@ -27,6 +28,7 @@ public class Start {
         creditsButton.setPreferredSize(new Dimension(75, 75));
         JLabel label = PanelComponents.getLabel("Number of players:", PanelComponents.titleFont);
         JPanel totalPanel = PanelComponents.getJPanel(BoxLayout.PAGE_AXIS);
+        bottomPanelSide = PanelComponents.getJPanel();
         JPanel bottomPanel = PanelComponents.getJPanel(new BorderLayout());
 
         playerList = PanelComponents.getJPanel(BoxLayout.PAGE_AXIS);
@@ -49,12 +51,15 @@ public class Start {
         playersSelection.add(label);
         playersSelection.add(playersBox);
 
-        titlePanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 15)));
         titlePanel.add(PanelComponents.getLogo());
-        titlePanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        bottomPanel.add(PanelComponents.getSpeakerUnmute(), BorderLayout.EAST);
-        bottomPanel.add(new JSlider(), BorderLayout.EAST);
+        bottomPanelSide.add(PanelComponents.getSlider());
+        bottomPanelSide.add(PanelComponents.getSpeakerUnmute());
+
+        bottomPanel.add(bottomPanelSide, BorderLayout.EAST);
+        bottomPanel.add(PanelComponents.getLabel("  v0.0.1", PanelComponents.descriptionFont), BorderLayout.WEST);
 
         totalPanel.add(titlePanel);
         totalPanel.add(PanelComponents.getSeparator());

@@ -13,6 +13,7 @@ import personal.opensrcerer.userInterface.panels.Start;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,12 +24,23 @@ public final class MainWindow extends JFrame {
     /**
      * Main window where everything occurs! Only created once.
      */
-    private static final MainWindow window = new MainWindow();
+    private static MainWindow window;
 
-    private MainWindow() {
+    /**
+     * The Audio Clip that loops in the program.
+     */
+    private Clip clip;
+
+    public MainWindow() {
         super("The One and Only Snake Eyes Game");
+        clip = null;
         try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(RunProject.class.getResource("/resources/music.wav"));
+            clip = AudioSystem.getClip();
+            clip.open(audioIn);
             PanelComponents.initializeImages();
+            window = this;
+            createAndShowGUI();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -39,39 +51,50 @@ public final class MainWindow extends JFrame {
      * this method is invoked from the
      * event dispatch thread.
      */
-    public static void createAndShowGUI() {
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public void createAndShowGUI() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Set up the content pane.
-        Start.setComponents(window.getContentPane());
+        Start.setComponents(getContentPane());
         // Pack the window so that the components
         // get their preferred size assigned.
         updateJFrame();
         // Make window non-resizable
-        window.setResizable(false);
+        setResizable(false);
         // Display the window.
-        window.setVisible(true);
+        setVisible(true);
 
-        /*
-        try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(RunProject.class.getResource("/resources/music.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-            clip.loop(Integer.MAX_VALUE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
+        clip.start();
+        clip.loop(Integer.MAX_VALUE);
     }
 
     /**
-     * @return The content pane for this JFrame.
+     * Sets the volume of the playing clip - first turning the volume from a linear to a logarithmic scale.
+     * @param volume The linear amount of volume to use.
+     */
+    public static void setVolume(float volume) {
+        // FloatControl uses a logarithmic amplitude! Corresponding linear multiplier:
+        // pow(10.0, gainDB/20.0)
+        FloatControl volumeControl = (FloatControl) window.clip.getControl(FloatControl.Type.MASTER_GAIN);
+        volumeControl.setValue((float) Math.log10(volume) * 20f); // Linear applied in reverse
+    }
+
+    /**
+     * @return Whether the clip file is currently muted.
+     */
+    public static boolean isMute() {
+        FloatControl gainControl = (FloatControl) window.clip.getControl(FloatControl.Type.MASTER_GAIN);
+        return ((float) Math.pow(10f, gainControl.getValue() / 20f)) <= 1.0E-3f;
+    }
+
+    /**
+     * @return The content pane for the singleton Window JFrame.
      */
     public static Container getWindowPane() {
         return window.getContentPane();
     }
 
     /**
-     * Packs, revalidates and repaints the JFrame to correctly fit a new layout.
+     * Packs, revalidates and repaints the singleton Window JFrame to correctly fit a new layout.
      */
     public static void updateJFrame() {
         window.pack(); // Fit size of JFrame

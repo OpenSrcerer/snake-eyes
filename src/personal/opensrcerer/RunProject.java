@@ -46,7 +46,7 @@ public class RunProject {
             throw new UnsupportedLookAndFeelException("Program is unable to start, provided look and feels are incompatible!");
 
         // Invoke managing of the UI to a specific UI management thread
-        SwingUtilities.invokeLater(MainWindow::createAndShowGUI);
+        SwingUtilities.invokeLater(MainWindow::new);
     }
 
     /**
