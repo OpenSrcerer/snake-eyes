@@ -364,26 +364,8 @@ public final class PanelComponents {
             if (slider.getValueIsAdjusting()) {
                 return;
             }
-
             float volume = slider.getValue() / 100f;
-
-            if (volume == 0f) {
-                JPanel musicPanel = MainWindow.getMusicPanel();
-                musicPanel.removeAll();
-                musicPanel.add(slider);
-                // TODO bug with disappearing mute button
-                musicPanel.revalidate();
-                musicPanel.repaint();
-            } else if (volume > 0f & MainWindow.isMute()) {
-                JPanel musicPanel = MainWindow.getMusicPanel();
-                musicPanel.removeAll();
-                musicPanel.add(slider);
-                musicPanel.add(PanelComponents.getSpeakerUnmute());
-                musicPanel.revalidate();
-                musicPanel.repaint();
-            }
-
-            MainWindow.setVolume(volume);
+            MainWindow.setVolume(volume, slider);
         });
 
         return slider;
@@ -534,23 +516,15 @@ public final class PanelComponents {
 
             @Override
             public void mouseClicked(MouseEvent evt) {
-                JPanel musicPanel = MainWindow.getMusicPanel();
                 JSlider slider = PanelComponents.getSlider();
 
-                musicPanel.removeAll();
                 if (MainWindow.isMute()) {
-                    MainWindow.setVolume(0.25f);
                     slider.setValue(25);
-                    musicPanel.add(slider);
-                    musicPanel.add(PanelComponents.getSpeakerUnmute());
+                    MainWindow.setVolume(0.25f, slider);
                 } else {
-                    MainWindow.setVolume(0f);
                     slider.setValue(0);
-                    musicPanel.add(slider);
-                    musicPanel.add(PanelComponents.getSpeakerMute());
+                    MainWindow.setVolume(0f, slider);
                 }
-                musicPanel.revalidate();
-                musicPanel.repaint();
             }
         });
     }
@@ -601,7 +575,7 @@ public final class PanelComponents {
         // FORMAT:
         //        Create new specific request (args)
 
-        // testing
+        // TODO
         return switch (type) {
             case ROLL -> e -> new RollRequest((JTextArea) args[0], button, (JTextField[]) args[1]);
             default -> throw new IllegalArgumentException("Invalid Button Listener");

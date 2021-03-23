@@ -112,7 +112,21 @@ public final class MainWindow extends JFrame {
      * Sets the volume of the playing clip - first turning the volume from a linear to a logarithmic scale.
      * @param volume The linear amount of volume to use.
      */
-    public static void setVolume(float volume) {
+    public static void setVolume(float volume, JSlider slider) {
+        if (volume == 0f) {
+            musicPanel.removeAll();
+            musicPanel.add(slider);
+            musicPanel.add(PanelComponents.getSpeakerMute());
+            musicPanel.revalidate();
+            musicPanel.repaint();
+        } else if (isMute() && volume > 0f) {
+            musicPanel.removeAll();
+            musicPanel.add(slider);
+            musicPanel.add(PanelComponents.getSpeakerUnmute());
+            musicPanel.revalidate();
+            musicPanel.repaint();
+        }
+
         // FloatControl uses a logarithmic amplitude! Corresponding linear multiplier:
         // pow(10.0, gainDB/20.0)
         FloatControl volumeControl = (FloatControl) window.clip.getControl(FloatControl.Type.MASTER_GAIN);
