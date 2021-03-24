@@ -82,7 +82,7 @@ public final class MainWindow extends JFrame {
         setResizable(false);
         // Display the window.
         setVisible(true);
-
+        // Start and loop the music
         clip.start();
         clip.loop(Integer.MAX_VALUE);
     }
