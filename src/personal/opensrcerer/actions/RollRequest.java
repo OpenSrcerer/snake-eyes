@@ -6,46 +6,27 @@
 
 package personal.opensrcerer.actions;
 
+import personal.opensrcerer.util.Player;
 import personal.opensrcerer.util.RequestDispatcher;
 
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
 /**
- * Menu option 2: Factorial of the average. Ask the user to input 5 positive integers between 0
- * and 15. Proceed to calculate and display the average of the 5 integers, as well as the factorial of
- * the integer in the group which is closest to the group's average. You may need to look up the
- * factorial formula in a mathematics book. You should build the code for the calculation of the
- * factorial rather than use a built-in Java function.
+ * Add description here
  */
 public class RollRequest implements Request {
-
     /**
-     * Array that contains 5 integers input from the user.
+     * Player that initiated this request.
      */
-    private final int[] numbers = new int[5];
+    private final Player player;
 
     /**
-     * Output area for the program's output.
-     */
-    private final JTextArea outputArea;
-
-    /**
-     * Button that starts the execution of this request.
-     */
-    private final JButton button;
-
-    /**
-     * Create a new FactorialRequest object and put it in the
+     * Create a new RollRequest object and put it in the
      * Request queue.
-     * @param outputArea Output area for the program's output.
-     * @param button Button that starts the execution of this request.
-     * @param fields TextFields to parse the input from.
      */
-    public RollRequest(JTextArea outputArea, JButton button, JTextField[] fields) {
+    public RollRequest(Player player) {
         this.outputArea = outputArea;
-        this.button = button;
 
         for (int index = 0; index < 5; ++index) {
             try {

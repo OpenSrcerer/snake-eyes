@@ -1,7 +1,6 @@
 package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.util.ButtonType;
-import personal.opensrcerer.util.PlayerComboBox;
 
 import javax.swing.*;
 import java.awt.*;

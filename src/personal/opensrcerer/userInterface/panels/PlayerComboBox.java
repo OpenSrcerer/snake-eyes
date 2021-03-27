@@ -1,6 +1,7 @@
-package personal.opensrcerer.util;
+package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.userInterface.panels.PanelComponents;
+import personal.opensrcerer.util.Player;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class PlayerComboBox<E> extends JComboBox<E> {
     /**
      * An ArrayList that contains the currently selected players.
      */
-    private final List<JPlayer> players = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
 
     /**
      * Create a new PlayerComboBox with the given parameters.
@@ -27,7 +28,7 @@ public class PlayerComboBox<E> extends JComboBox<E> {
         setFont(PanelComponents.descriptionFont);
 
         // Add default player
-        JPlayer defaultPlayer = new JPlayer(1);
+        Player defaultPlayer = new Player(1);
         players.add(defaultPlayer);
         playerList.add(defaultPlayer);
 
@@ -36,7 +37,7 @@ public class PlayerComboBox<E> extends JComboBox<E> {
 
             int selection = getSelectedIndex() + 1;
             for (int index = 0; index < selection; ++index) {
-                JPlayer newPlayer = new JPlayer(index + 1);
+                Player newPlayer = new Player(index + 1);
                 players.add(newPlayer);
                 playerList.add(newPlayer);
             }
@@ -49,7 +50,7 @@ public class PlayerComboBox<E> extends JComboBox<E> {
     /**
      * @return An array of the JPlayers that will participate.
      */
-    public JPlayer[] getPlayers() {
-        return players.toArray(new JPlayer[0]);
+    public Player[] getPlayers() {
+        return players.toArray(new Player[0]);
     }
 }

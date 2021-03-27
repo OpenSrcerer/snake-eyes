@@ -8,7 +8,7 @@ import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
  * A custom JComponent that shows players on a leaderboard, and contains information about a player.
  * The unique detail about this Object is that it is used both as a GUI component and also as a bean to store information.
  */
-public class JPlayer extends JPanel {
+public class Player extends JPanel {
 
     /**
      * Shows whether the JPlayer is a bot.
@@ -25,7 +25,7 @@ public class JPlayer extends JPanel {
      */
     private int score;
 
-    public JPlayer(int playerNumber) {
+    public Player(int playerNumber) {
         super();
         setBackground(discordGrayer);
 

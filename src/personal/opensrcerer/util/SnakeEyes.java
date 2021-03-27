@@ -5,47 +5,72 @@ import java.util.stream.Stream;
 
 /**
  * Represents one full SnakeEyes game.
+ * Uses the Singleton design pattern.
  */
 public final class SnakeEyes {
-
     /**
      * An array that contains all the JPlayers in the game.
      */
-    private final JPlayer[] players;
+    private static Player[] players = null;
 
     /**
      * The total rounds in this game.
      */
-    private final int totalRounds;
+    private static int totalRounds;
 
     /**
      * This game's current round.
      */
-    private int currentRound;
+    private static int currentRound = 1;
 
-    public SnakeEyes(JPlayer[] players, int totalRounds) {
-        this.players = players;
-        this.totalRounds = totalRounds;
+    /**
+     * Resets the singleton instance of the ongoing game.
+     */
+    public static void resetGame(Player[] players, int totalRounds) {
+        SnakeEyes.players = players;
+        SnakeEyes.totalRounds = totalRounds;
+    }
+
+    private SnakeEyes() {
     }
 
     /**
      * @return The current round of the game.
      */
-    public int getCurrentRound() {
+    public static int getCurrentRound() {
         return currentRound;
     }
 
     /**
      * @return The total rounds of the game.
      */
-    public int getTotalRounds() {
+    public static int getTotalRounds() {
         return totalRounds;
+    }
+
+    /**
+     * Advance the game to the next round.
+     * If there are no more rounds, the game finishes.
+     */
+    public static synchronized void nextRound() {
+        if (currentRound <= totalRounds) {
+            currentRound++;
+        } else {
+            // TODO finish the game
+        }
+    }
+
+    /**
+     * @return The number of players in this game.
+     */
+    public static int size() {
+        return players.length;
     }
 
     /**
      * @return All the players in the game as a Stream.
      */
-    public Stream<JPlayer> getPlayers() {
+    public static Stream<Player> getPlayers() {
         return Arrays.stream(players);
     }
 }

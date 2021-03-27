@@ -21,7 +21,7 @@ public class GamePanel {
 
         // Left side of panel, scoreboard
         scoreboardPanel.add(getSkeletonLogo());
-        scoreboardPanel.add(getScoreboard(1));
+        scoreboardPanel.add(new Scoreboard());
 
         gamePanelSep.add(Box.createRigidArea(new Dimension(0, 20)));
         gamePanelSep.add(getDicePanel("Gambler"));

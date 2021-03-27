@@ -9,8 +9,6 @@ package personal.opensrcerer.userInterface;
 import personal.opensrcerer.RunProject;
 import personal.opensrcerer.userInterface.panels.PanelComponents;
 import personal.opensrcerer.userInterface.panels.StartPanel;
-import personal.opensrcerer.util.JPlayer;
-import personal.opensrcerer.util.SnakeEyes;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -18,7 +16,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
-import java.util.stream.Stream;
 
 /**
  * The main and only JFrame that the GUI uses.
@@ -28,11 +25,6 @@ public final class MainWindow extends JFrame {
      * Main window where everything occurs! Only created once.
      */
     private static MainWindow window;
-
-    /**
-     * An object that contains the currently ongoing game.
-     */
-    private static SnakeEyes currentGame;
 
     /**
      * The JPanel used globally on the bottom bar that manages music.
@@ -90,16 +82,6 @@ public final class MainWindow extends JFrame {
     }
 
     /**
-     * Create a new game if there is no currently ongoing game.
-     * @param players Information about the participants of the game.
-     */
-    public static void createGame(JPlayer[] players, int totalRounds) {
-        if (currentGame == null) {
-            currentGame = new SnakeEyes(players, totalRounds);
-        }
-    }
-
-    /**
      * Sets the volume of the playing clip - first turning the volume from a linear to a logarithmic scale.
      * @param volume The linear amount of volume to use.
      */
@@ -122,13 +104,6 @@ public final class MainWindow extends JFrame {
         // pow(10.0, gainDB/20.0)
         FloatControl volumeControl = (FloatControl) window.clip.getControl(FloatControl.Type.MASTER_GAIN);
         volumeControl.setValue((float) Math.log10(volume) * 20f); // Linear applied in reverse
-    }
-
-    /**
-     * @return An array of all JPlayers in the currently ongoing game.
-     */
-    public static Stream<JPlayer> getPlayers() {
-        return currentGame.getPlayers();
     }
 
     /**

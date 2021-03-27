@@ -8,7 +8,9 @@ package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.RunProject;
 import personal.opensrcerer.userInterface.MainWindow;
-import personal.opensrcerer.util.*;
+import personal.opensrcerer.util.ButtonType;
+import personal.opensrcerer.util.RequestDispatcher;
+import personal.opensrcerer.util.SnakeEyes;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -17,8 +19,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This class is used to retrieve custom stylized JComponents
@@ -100,7 +100,7 @@ public final class PanelComponents {
             MainWindow.getWindowPane().removeAll();
             MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
             // Create a new game
-            MainWindow.createGame(playerBox.getPlayers(), roundBox.getSelectedIndex() + 1);
+            SnakeEyes.resetGame(playerBox.getPlayers(), roundBox.getSelectedIndex() + 1);
             // Switch window context
             GamePanel.setComponents(MainWindow.getWindowPane());
             MainWindow.updateJFrame();
@@ -308,6 +308,16 @@ public final class PanelComponents {
     }
 
     /**
+     * @return A custom JLabel that is constructed with
+     * a png instead of text.
+     */
+    public static JLabel getCursor() {
+        JLabel cursor = new JLabel(imagesList[12]);
+        cursor.setBackground(discordGrayer);
+        return cursor;
+    }
+
+    /**
      * @param playerName Name of player whose turn it is.
      * @return The Dice panel component.
      */
@@ -341,30 +351,6 @@ public final class PanelComponents {
         allDies.setBorder(getBorder());
 
         return allDies;
-    }
-
-    /**
-     * @param round The current round.
-     * @return A modular JPanel scoreboard.
-     */
-    public static JPanel getScoreboard(int round) {
-        JPanel outerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
-        JPanel innerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
-        outerScoreboard.add(Box.createRigidArea(new Dimension(350, 10)));
-
-        List<JPlayer> sortedPlayers = MainWindow.getPlayers().sorted((a, b) -> b.getScore() - a.getScore()).collect(Collectors.toList());
-        for (JPlayer player : sortedPlayers) {
-            innerScoreboard.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));
-            innerScoreboard.add(Box.createRigidArea(new Dimension(200, 10)));
-        }
-
-        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - ((int) MainWindow.getPlayers().count() * 37))));
-        innerScoreboard.setBorder(getBorder("Scoreboard // Round " + round));
-
-        outerScoreboard.add(innerScoreboard);
-        outerScoreboard.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        return outerScoreboard;
     }
 
     /**
@@ -432,7 +418,7 @@ public final class PanelComponents {
      * @throws NullPointerException If retrieved image is null.
      */
     public static void initializeImages() {
-        imagesList = new ImageIcon[12];
+        imagesList = new ImageIcon[13];
         for (int index = 0; index < 6; ++index) {
             // Retrieve a resource stream using a base class as a reference point.
             imagesList[index] = new ImageIcon(RunProject.class.getResource("/resources/die" + (index + 1) + ".png"));
@@ -443,6 +429,7 @@ public final class PanelComponents {
         imagesList[9] = new ImageIcon(RunProject.class.getResource("/resources/skelly.png"));
         imagesList[10] = new ImageIcon(RunProject.class.getResource("/resources/dieq.png"));
         imagesList[11] = new ImageIcon(RunProject.class.getResource("/resources/flamingdice.png"));
+        imagesList[12] = new ImageIcon(RunProject.class.getResource("/resources/cursor.png"));
     }
 
     /**
