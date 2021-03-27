@@ -7,11 +7,8 @@
 package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.RunProject;
-import personal.opensrcerer.actions.RollRequest;
 import personal.opensrcerer.userInterface.MainWindow;
-import personal.opensrcerer.util.ButtonType;
-import personal.opensrcerer.util.JPlayer;
-import personal.opensrcerer.util.RequestDispatcher;
+import personal.opensrcerer.util.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -69,18 +66,66 @@ public final class PanelComponents {
     }
 
     /**
-     * Retrieves a custom JButton.
-     * @param buttonName Name and initial text of button.
-     * @param type Type of button.
-     * @param arg Objects to pass to the addActionListener function.
-     * @return Customized JButton.
+     * @param buttonName Name of button.
+     * @param type Type of button. See ButtonType.
+     * @see ButtonType
+     * @return A custom button inside a JPanel that has a border.
      */
-    public static JButton getButton(String buttonName, ButtonType type, Object... arg) {
+    public static JPanel getBorderedButton(String buttonName, ButtonType type) {
+        JPanel panel = new JPanel(new GridLayout(1, 1));
+        JButton button = getButton(buttonName, type);
+        button.setFocusPainted(false);
+        panel.add(button);
+        panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
+        return panel;
+    }
+
+    /**
+     * Gets a custom Bordered Button with a listener that takes arguments.
+     * @param playerBox The ComboBox that carries JPlayers.
+     * @param roundBox The total number of round for the new game.
+     * @return A custom Bordered button that starts a new game.
+     */
+    public static JPanel getPlayButton(PlayerComboBox<Integer> playerBox, JComboBox<Integer> roundBox) {
+        JPanel panel = new JPanel(new GridLayout(1, 1));
         JButton button = new JButton();
-        setButtonPalette(buttonName, button);
+        // Style Button
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        setButtonPalette("Play", button);
         setMouseListener(button);
-        button.addActionListener(getListener(type, button, arg));
-        return button;
+        button.setFocusPainted(false);
+        // Listener
+        button.addActionListener(e -> {
+            // Remove elements
+            MainWindow.getWindowPane().removeAll();
+            MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
+            // Create a new game
+            MainWindow.createGame(playerBox.getPlayers(), roundBox.getSelectedIndex() + 1);
+            // Switch window context
+            GamePanel.setComponents(MainWindow.getWindowPane());
+            MainWindow.updateJFrame();
+        });
+        // Panel Styling and return
+        panel.add(button);
+        panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
+        return panel;
+    }
+
+    /**
+     * @see ButtonType
+     * @return A custom button inside a JPanel that has a border.
+     */
+    public static JPanel getRollButton() {
+        JPanel panel = new JPanel(new GridLayout(1, 1));
+        JButton button = new JButton(imagesList[11]);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        setButtonPalette("", button);
+        setMouseListener(button);
+        button.addActionListener(getListener(ButtonType.ROLL));
+        button.setFocusPainted(false);
+        panel.add(button);
+        panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
+        return panel;
     }
 
     /**
@@ -346,37 +391,6 @@ public final class PanelComponents {
         return slider;
     }
 
-    /**
-     * @param buttonName Name of button.
-     * @param type Type of button. See ButtonType.
-     * @see ButtonType
-     * @return A custom button inside a JPanel that has a border.
-     */
-    public static JPanel getBorderedButton(String buttonName, ButtonType type) {
-        JPanel panel = new JPanel(new GridLayout(1, 1));
-        JButton button = getButton(buttonName, type);
-        button.setFocusPainted(false);
-        panel.add(button);
-        panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
-        return panel;
-    }
-
-    /**
-     * @see ButtonType
-     * @return A custom button inside a JPanel that has a border.
-     */
-    public static JPanel getRollButton() {
-        JPanel panel = new JPanel(new GridLayout(1, 1));
-        JButton button = new JButton(imagesList[11]);
-        button.setHorizontalAlignment(SwingConstants.CENTER);
-        setButtonPalette("", button);
-        setMouseListener(button);
-        button.addActionListener(getListener(ButtonType.ROLL));
-        button.setFocusPainted(false);
-        panel.add(button);
-        panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
-        return panel;
-    }
 
     /**
      * @param round Current round.
@@ -523,28 +537,21 @@ public final class PanelComponents {
                 // TODO
                 MainWindow.updateJFrame();
             };
-            case START -> e -> {
-                MainWindow.getWindowPane().removeAll();
-                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-                GamePanel.setComponents(MainWindow.getWindowPane());
-                MainWindow.updateJFrame();
-            };
             case EXIT -> e -> {
-                    MainWindow.disposeJFrame();
-                    RequestDispatcher.killExecutor();
+                MainWindow.disposeJFrame();
+                RequestDispatcher.killExecutor();
             };
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         };
     }
 
     /**
      * Retrieves a listener according to what a specific button should do when clicked.
      * Used for GUI request listeners.
-     * @param type Type of button
-     * @param button Target button
-     * @param args Any further arguments that the request may require.
+     * @param game The game that this listener will update.
      * @return Specific ActionListener
      */
-    private static ActionListener getListener(ButtonType type, JButton button, Object[] args) {
+    private static ActionListener getListener(ButtonType type, SnakeEyes game) {
 
         // Variable "e" indicates a new lambda action listener
         // FORMAT:
@@ -552,7 +559,12 @@ public final class PanelComponents {
 
         // TODO
         return switch (type) {
-            case ROLL -> e -> new RollRequest((JTextArea) args[0], button, (JTextField[]) args[1]);
+            case PLAY -> e -> {
+                MainWindow.getWindowPane().removeAll();
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
+                GamePanel.setComponents(MainWindow.getWindowPane());
+                MainWindow.updateJFrame();
+            };
             default -> throw new IllegalArgumentException("Invalid Button Listener");
         };
     }

@@ -93,8 +93,10 @@ public final class MainWindow extends JFrame {
      * Create a new game if there is no currently ongoing game.
      * @param players Information about the participants of the game.
      */
-    public static void createGame(JPlayer[] players) {
-        currentGame = new SnakeEyes(players);
+    public static void createGame(JPlayer[] players, int totalRounds) {
+        if (currentGame == null) {
+            currentGame = new SnakeEyes(players, totalRounds);
+        }
     }
 
     /**

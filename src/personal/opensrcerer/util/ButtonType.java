@@ -30,7 +30,7 @@ public enum ButtonType {
     /**
      * Represents the "Start Game" button in the UI.
      */
-    START,
+    PLAY,
 
     /**
      * Represents the "Roll" button in the UI.

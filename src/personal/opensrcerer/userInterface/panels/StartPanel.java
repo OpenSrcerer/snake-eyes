@@ -10,15 +10,19 @@ import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
 public class StartPanel {
 
-    private static JPanel playerList;
-    private static JComboBox<Integer> playersBox, roundsBox;
-
     public static void setComponents(final Container pane) {
+        JPanel playerList = getJPanel(BoxLayout.PAGE_AXIS);
+        playerList.setPreferredSize(new Dimension(500, 320));
+        playerList.setBorder(getBorder("Player List"));
+
+        PlayerComboBox<Integer> playersBox = new PlayerComboBox<>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}, playerList);
+        JComboBox<Integer> roundsBox = getComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
+
         JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
                 selections = getJPanel(BoxLayout.PAGE_AXIS),
                 titlePanel = getJPanel(BoxLayout.PAGE_AXIS),
                 buttonPanel = getJPanel(BoxLayout.LINE_AXIS),
-                playButton = getBorderedButton("Play", ButtonType.START),
+                playButton = getPlayButton(playersBox, roundsBox),
                 helpButton = getBorderedButton("Help", ButtonType.HELP),
                 creditsButton = getBorderedButton("Credits", ButtonType.CREDITS),
                 playersSelection = getJPanel(),
@@ -27,13 +31,6 @@ public class StartPanel {
         playButton.setPreferredSize(new Dimension(75, 75));
         helpButton.setPreferredSize(new Dimension(75, 75));
         creditsButton.setPreferredSize(new Dimension(75, 75));
-
-        playerList = getJPanel(BoxLayout.PAGE_AXIS);
-        playerList.setPreferredSize(new Dimension(500, 320));
-        playerList.setBorder(getBorder("Player List"));
-
-        playersBox = new PlayerComboBox<>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}, playerList);
-        roundsBox = getComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
 
         buttonPanel.add(helpButton);
         buttonPanel.add(playButton);

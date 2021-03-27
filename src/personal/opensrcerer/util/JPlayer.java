@@ -5,7 +5,8 @@ import javax.swing.*;
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
 /**
- * A custom JComponent that is used to show players on a leaderboard.
+ * A custom JComponent that shows players on a leaderboard, and contains information about a player.
+ * The unique detail about this Object is that it is used both as a GUI component and also as a bean to store information.
  */
 public class JPlayer extends JPanel {
 
@@ -20,7 +21,7 @@ public class JPlayer extends JPanel {
     private final JTextField field;
 
     /**
-     * Contains the player's score
+     * Contains the player's score.
      */
     private int score;
 

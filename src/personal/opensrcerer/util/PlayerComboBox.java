@@ -1,6 +1,5 @@
 package personal.opensrcerer.util;
 
-import personal.opensrcerer.userInterface.MainWindow;
 import personal.opensrcerer.userInterface.panels.PanelComponents;
 
 import javax.swing.*;
@@ -51,6 +50,6 @@ public class PlayerComboBox<E> extends JComboBox<E> {
      * @return An array of the JPlayers that will participate.
      */
     public JPlayer[] getPlayers() {
-        return (JPlayer[]) players.toArray();
+        return players.toArray(new JPlayer[0]);
     }
 }
