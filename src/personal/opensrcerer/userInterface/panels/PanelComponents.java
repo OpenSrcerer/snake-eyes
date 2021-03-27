@@ -20,7 +20,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -128,36 +127,6 @@ public final class PanelComponents {
         JComboBox<W> box = new JComboBox<>(selections);
         box.setBackground(discordGrayer);
         box.setFont(descriptionFont);
-        return box;
-    }
-
-    /**
-     * A generified function that creates a custom JComboBox.
-     * @param selections Number of selections on the JComboBox.
-     * @param playerList List of players before starting. (GUI Element)
-     * @param <W> Type of data that this JComboBox holds.
-     * @return A JComboBox that updates the number of players on the given JPanel player board.
-     */
-    public static <W> JComboBox<W> getPlayerComboBox(W[] selections, JPanel playerList) {
-        JComboBox<W> box = new JComboBox<>(selections);
-        box.setBackground(discordGrayer);
-        box.setFont(descriptionFont);
-        box.addActionListener(e -> {
-            playerList.removeAll();
-            int selection = box.getSelectedIndex() + 1;
-            JPlayer[] players = new JPlayer[selection];
-
-            for (int index = 0; index < selection; ++index) {
-                JPlayer newPlayer = new JPlayer(index + 1);
-                players[index] = newPlayer;
-                playerList.add(newPlayer);
-            }
-
-            MainWindow.setPlayers(players);
-            playerList.revalidate();
-            playerList.repaint();
-        });
-
         return box;
     }
 
@@ -331,25 +300,31 @@ public final class PanelComponents {
 
     /**
      * @param round The current round.
-     * @return A fully working and modular JPanel scoreboard.
+     * @return A modular JPanel scoreboard.
      */
     public static JPanel getScoreboard(int round) {
         JPanel outerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
         JPanel innerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
         outerScoreboard.add(Box.createRigidArea(new Dimension(350, 10)));
 
-        List<JPlayer> sortedPlayers = Arrays.stream(MainWindow.getPlayers()).sorted((a, b) -> b.getScore() - a.getScore()).collect(Collectors.toList());
+        List<JPlayer> sortedPlayers = MainWindow.getPlayers().sorted((a, b) -> b.getScore() - a.getScore()).collect(Collectors.toList());
         for (JPlayer player : sortedPlayers) {
             innerScoreboard.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));
             innerScoreboard.add(Box.createRigidArea(new Dimension(200, 10)));
         }
-        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - (MainWindow.getPlayers().length * 37))));
+
+        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - ((int) MainWindow.getPlayers().count() * 37))));
         innerScoreboard.setBorder(getBorder("Scoreboard // Round " + round));
+
         outerScoreboard.add(innerScoreboard);
         outerScoreboard.add(Box.createRigidArea(new Dimension(0, 20)));
+
         return outerScoreboard;
     }
 
+    /**
+     * @return A customized JSlider to use as the music slider.
+     */
     public static JSlider getSlider() {
         JSlider slider = new JSlider();
         slider.setMaximum(100);
@@ -551,7 +526,7 @@ public final class PanelComponents {
             case START -> e -> {
                 MainWindow.getWindowPane().removeAll();
                 MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-                Game.setComponents(MainWindow.getWindowPane());
+                GamePanel.setComponents(MainWindow.getWindowPane());
                 MainWindow.updateJFrame();
             };
             case EXIT -> e -> {

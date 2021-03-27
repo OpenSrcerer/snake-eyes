@@ -1,15 +1,14 @@
 package personal.opensrcerer.userInterface.panels;
 
-import personal.opensrcerer.userInterface.MainWindow;
 import personal.opensrcerer.util.ButtonType;
-import personal.opensrcerer.util.JPlayer;
+import personal.opensrcerer.util.PlayerComboBox;
 
 import javax.swing.*;
 import java.awt.*;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
-public class Start {
+public class StartPanel {
 
     private static JPanel playerList;
     private static JComboBox<Integer> playersBox, roundsBox;
@@ -33,13 +32,8 @@ public class Start {
         playerList.setPreferredSize(new Dimension(500, 320));
         playerList.setBorder(getBorder("Player List"));
 
-        playersBox = getPlayerComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}, playerList);
+        playersBox = new PlayerComboBox<>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}, playerList);
         roundsBox = getComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
-
-        // Add default player
-        JPlayer defaultPlayer = new JPlayer(1);
-        MainWindow.setPlayers(new JPlayer[] { defaultPlayer });
-        playerList.add(defaultPlayer);
 
         buttonPanel.add(helpButton);
         buttonPanel.add(playButton);

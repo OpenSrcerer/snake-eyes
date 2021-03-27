@@ -5,7 +5,7 @@ import java.awt.*;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
-public class Game {
+public class GamePanel {
     public static void setComponents(final Container pane) {
         JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
                 scoreboardPanel = getJPanel(BoxLayout.PAGE_AXIS),

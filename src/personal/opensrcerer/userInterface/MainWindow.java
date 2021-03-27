@@ -8,8 +8,9 @@ package personal.opensrcerer.userInterface;
 
 import personal.opensrcerer.RunProject;
 import personal.opensrcerer.userInterface.panels.PanelComponents;
-import personal.opensrcerer.userInterface.panels.Start;
+import personal.opensrcerer.userInterface.panels.StartPanel;
 import personal.opensrcerer.util.JPlayer;
+import personal.opensrcerer.util.SnakeEyes;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -17,6 +18,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
+import java.util.stream.Stream;
 
 /**
  * The main and only JFrame that the GUI uses.
@@ -28,9 +30,9 @@ public final class MainWindow extends JFrame {
     private static MainWindow window;
 
     /**
-     * An array that contains all the players in the game.
+     * An object that contains the currently ongoing game.
      */
-    private static JPlayer[] allPlayers;
+    private static SnakeEyes currentGame;
 
     /**
      * The JPanel used globally on the bottom bar that manages music.
@@ -74,7 +76,7 @@ public final class MainWindow extends JFrame {
     public void createAndShowGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Set up the content pane.
-        Start.setComponents(getContentPane());
+        StartPanel.setComponents(getContentPane());
         // Pack the window so that the components
         // get their preferred size assigned.
         updateJFrame();
@@ -88,24 +90,11 @@ public final class MainWindow extends JFrame {
     }
 
     /**
-     * Update the array of players with new ones.
+     * Create a new game if there is no currently ongoing game.
+     * @param players Information about the participants of the game.
      */
-    public static void setPlayers(JPlayer[] players) {
-        allPlayers = players;
-    }
-
-    /**
-     * @return An array of all JPlayers.
-     */
-    public static JPlayer[] getPlayers() {
-        return allPlayers;
-    }
-
-    /**
-     * @return The MusicPanel for this window.
-     */
-    public static JPanel getMusicPanel() {
-        return musicPanel;
+    public static void createGame(JPlayer[] players) {
+        currentGame = new SnakeEyes(players);
     }
 
     /**
@@ -131,6 +120,20 @@ public final class MainWindow extends JFrame {
         // pow(10.0, gainDB/20.0)
         FloatControl volumeControl = (FloatControl) window.clip.getControl(FloatControl.Type.MASTER_GAIN);
         volumeControl.setValue((float) Math.log10(volume) * 20f); // Linear applied in reverse
+    }
+
+    /**
+     * @return An array of all JPlayers in the currently ongoing game.
+     */
+    public static Stream<JPlayer> getPlayers() {
+        return currentGame.getPlayers();
+    }
+
+    /**
+     * @return The MusicPanel for this window.
+     */
+    public static JPanel getMusicPanel() {
+        return musicPanel;
     }
 
     /**
