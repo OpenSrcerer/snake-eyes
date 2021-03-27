@@ -1,5 +1,7 @@
 package personal.opensrcerer.userInterface.panels;
 
+import personal.opensrcerer.util.SnakeEyes;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -21,10 +23,10 @@ public class GamePanel {
 
         // Left side of panel, scoreboard
         scoreboardPanel.add(getSkeletonLogo());
-        scoreboardPanel.add(new Scoreboard());
+        scoreboardPanel.add(SnakeEyes.getScoreboard());
 
         gamePanelSep.add(Box.createRigidArea(new Dimension(0, 20)));
-        gamePanelSep.add(getDicePanel("Gambler"));
+        gamePanelSep.add(SnakeEyes.getDiceboard());
         gamePanelSep.add(Box.createRigidArea(new Dimension(0, 20)));
         gamePanelSep.add(sep2);
         gamePanelSep.add(getRollButton());

@@ -318,42 +318,6 @@ public final class PanelComponents {
     }
 
     /**
-     * @param playerName Name of player whose turn it is.
-     * @return The Dice panel component.
-     */
-    public static JPanel getDicePanel(String playerName) {
-        JLabel die1 = getImageLabel(10),
-                die2 = getImageLabel(10),
-                die3 = getImageLabel(10),
-                die4 = getImageLabel(10);
-
-        JPanel allDies = getJPanel(BoxLayout.PAGE_AXIS);
-        JPanel pointDies = getJPanel(BoxLayout.LINE_AXIS);
-        JPanel rollDies = getJPanel(BoxLayout.LINE_AXIS);
-
-        pointDies.add(Box.createRigidArea(new Dimension(20, 0))); // Side spacing L
-        pointDies.add(die1);
-        pointDies.add(Box.createRigidArea(new Dimension(20, 0))); // Inbetween spacing
-        pointDies.add(die2);
-        pointDies.add(Box.createRigidArea(new Dimension(20, 0))); // Side spacing R
-
-        rollDies.add(die3);
-        rollDies.add(Box.createRigidArea(new Dimension(20, 0))); // Inbetween spacing
-        rollDies.add(die4);
-
-        allDies.add(Box.createRigidArea(new Dimension(0, 20))); // Top Spacing
-        allDies.add(getLabel(playerName + "'s Point Dice: ", titleFont));
-        allDies.add(pointDies);
-        allDies.add(Box.createRigidArea(new Dimension(0, 20))); // Inbetween spacing
-        allDies.add(getLabel(playerName + "'s Current Dice: ", titleFont));
-        allDies.add(rollDies);
-        allDies.add(Box.createRigidArea(new Dimension(0, 20))); // Bottom Spacing
-        allDies.setBorder(getBorder());
-
-        return allDies;
-    }
-
-    /**
      * @return A customized JSlider to use as the music slider.
      */
     public static JSlider getSlider() {
