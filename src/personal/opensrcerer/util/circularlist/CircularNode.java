@@ -4,7 +4,7 @@ package personal.opensrcerer.util.circularlist;
  * This class is a node for the Circular Linked List.
  * @param <X> Type of data to contain.
  */
-public class CircularNode<X> {
+class CircularNode<X> {
     /**
      * The current element in the node.
      */
@@ -15,7 +15,7 @@ public class CircularNode<X> {
      */
     protected CircularNode<X> next;
 
-    protected CircularNode() {
-
+    protected CircularNode(X data) {
+        this.element = data;
     }
 }

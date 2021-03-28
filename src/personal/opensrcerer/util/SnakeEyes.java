@@ -2,8 +2,8 @@ package personal.opensrcerer.util;
 
 import personal.opensrcerer.userInterface.panels.Diceboard;
 import personal.opensrcerer.userInterface.panels.Scoreboard;
+import personal.opensrcerer.util.circularlist.CircularLinkedList;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 /**
@@ -23,14 +23,9 @@ public final class SnakeEyes {
     private static Scoreboard scoreboard;
 
     /**
-     * An array that contains all the JPlayers in the game.
+     * A custom Circular Linked List that contains all the JPlayers in the game.
      */
-    private static Player[] players = null;
-
-    /**
-     * A variable representing whose turn it is.
-     */
-    private static int currentTurn = 0;
+    private static CircularLinkedList<Player> players = null;
 
     /**
      * The total rounds in this game.
@@ -46,7 +41,7 @@ public final class SnakeEyes {
      * Resets the singleton instance of the ongoing game.
      */
     public static void resetGame(Player[] players, int totalRounds) {
-        SnakeEyes.players = players;
+        SnakeEyes.players = new CircularLinkedList<>(players);
         SnakeEyes.totalRounds = totalRounds;
         SnakeEyes.currentRound = 1;
         SnakeEyes.diceboard = new Diceboard();
@@ -60,14 +55,14 @@ public final class SnakeEyes {
      * @return The player whose turn it is.
      */
     public static Player getPlayerOnTurn() {
-        return players[currentTurn];
+        return players.getCurrent();
     }
 
     /**
      * @return All the players in the game as a Stream.
      */
     public static Stream<Player> getPlayers() {
-        return Arrays.stream(players);
+        return players.getAll().stream();
     }
 
     /**
@@ -103,10 +98,9 @@ public final class SnakeEyes {
      * If it's the turn of the last player on the list, the round advances, or the game ends.
      */
     public static synchronized void nextTurn() {
-        if (currentTurn <= players.length - 1) {
-            currentTurn++;
-        } else {
-            nextRound();
+        players.next(); // Advance the turn
+        if (players.isAtFirst()) { // If the list of players just looped once
+            nextRound(); // Advance the round
         }
     }
 
@@ -115,9 +109,8 @@ public final class SnakeEyes {
      * If there are no more rounds, the game finishes.
      */
     public static void nextRound() {
-        if (currentRound < totalRounds) {
-            currentRound++;
-            getPlayers().
+        if (currentRound < totalRounds) { // If the current round is at a lesser value than the total rounds
+            currentRound++; // Increment
         } else {
             // TODO finish the game
         }
@@ -127,6 +120,6 @@ public final class SnakeEyes {
      * @return The number of players in this game.
      */
     public static int size() {
-        return players.length;
+        return players.size();
     }
 }
