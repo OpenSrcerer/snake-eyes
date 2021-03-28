@@ -484,9 +484,12 @@ public final class PanelComponents {
         //        Pack JFrame & Repaint
 
         return switch (type) {
-            case HELP, CREDITS, ROLL -> e -> {
+            case HELP, CREDITS -> e -> {
                 // TODO
                 MainWindow.updateJFrame();
+            };
+            case ROLL -> e -> {
+
             };
             case EXIT -> e -> {
                 MainWindow.disposeJFrame();

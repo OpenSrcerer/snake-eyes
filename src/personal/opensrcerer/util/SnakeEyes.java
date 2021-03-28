@@ -117,6 +117,7 @@ public final class SnakeEyes {
     public static void nextRound() {
         if (currentRound < totalRounds) {
             currentRound++;
+            getPlayers().
         } else {
             // TODO finish the game
         }

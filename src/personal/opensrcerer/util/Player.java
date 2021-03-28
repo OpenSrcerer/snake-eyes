@@ -21,6 +21,16 @@ public class Player extends JPanel {
     private final JTextField field;
 
     /**
+     * Contains the point dice for a player.
+     */
+    private int[] pointDice = null;
+
+    /**
+     * Shows the player's status in relation to the round.
+     */
+    private PlayerStatus status = PlayerStatus.AWAITING_POINT_ROLL;
+
+    /**
      * Contains the player's score.
      */
     private int score;
@@ -38,17 +48,10 @@ public class Player extends JPanel {
     }
 
     /**
-     * @param scoreToAdd Points to add to the score.
+     * Rolls the player's dice and performs the appropriate action.
      */
-    public void addToScore(int scoreToAdd) {
-        score += scoreToAdd;
-    }
+    public synchronized void roll() {
 
-    /**
-     * @param scoreToRemove Points to remove from the score.
-     */
-    public void removeFromScore(int scoreToRemove) {
-        score -= scoreToRemove;
     }
 
     /**
@@ -70,5 +73,12 @@ public class Player extends JPanel {
      */
     public boolean isCpu() {
         return cpuBox.isSelected();
+    }
+
+    /**
+     * Sets the player's status to a AWAITING_POINT_ROLL.
+     */
+    public void resetStatus() {
+        this.status = PlayerStatus.AWAITING_POINT_ROLL;
     }
 }
