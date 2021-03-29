@@ -28,6 +28,7 @@ public class RollButton extends JPanel {
 
     /**
      * Toggle the availability of this button.
+     * This method is synchronized as it is accessed in a multithreaded context.
      */
     public synchronized void toggle() {
         rollButton.setEnabled(!rollButton.isEnabled());

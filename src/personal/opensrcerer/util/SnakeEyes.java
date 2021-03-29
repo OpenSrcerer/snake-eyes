@@ -1,6 +1,7 @@
 package personal.opensrcerer.util;
 
 import personal.opensrcerer.actions.RollRequest;
+import personal.opensrcerer.userInterface.panels.Banner;
 import personal.opensrcerer.userInterface.panels.Diceboard;
 import personal.opensrcerer.userInterface.panels.RollButton;
 import personal.opensrcerer.userInterface.panels.Scoreboard;
@@ -17,7 +18,12 @@ public final class SnakeEyes {
     /**
      * The Roll Button for this game.
      */
-    private static final RollButton rollButton = new RollButton();
+    private static RollButton rollButton;
+
+    /**
+     * The banner that contains announcement text for this game.
+     */
+    private static Banner banner;
 
     /**
      * The Diceboard for this game.
@@ -48,7 +54,9 @@ public final class SnakeEyes {
      * Resets the singleton instance of the ongoing game.
      */
     public static void resetGame(Player[] players, int totalRounds) {
+        SnakeEyes.rollButton = new RollButton();
         SnakeEyes.players = new CircularLinkedList<>(players);
+        SnakeEyes.banner = new Banner();
         SnakeEyes.totalRounds = totalRounds;
         SnakeEyes.currentRound = 1;
         SnakeEyes.diceboard = new Diceboard();
@@ -84,6 +92,13 @@ public final class SnakeEyes {
      */
     public static Diceboard getDiceboard() {
         return diceboard;
+    }
+
+    /**
+     * @return The Banner for this game.
+     */
+    public static Banner getBanner() {
+        return banner;
     }
 
     /**
@@ -127,11 +142,18 @@ public final class SnakeEyes {
     }
 
     /**
+     * @return The number of players in this game.
+     */
+    public static int size() {
+        return players.size();
+    }
+
+    /**
      * Advance the game to the next round.
      * If there are no more rounds, the game finishes.
      * @return True if game finished, false if it didn't.
      */
-    public static boolean nextRound() {
+    private static boolean nextRound() {
         if (currentRound < totalRounds) { // If the current round is at a lesser value than the total rounds
             currentRound++; // Increment
             getPlayers().forEach(Player::resetStatus); // Resets the player's status to unrolled
@@ -140,12 +162,5 @@ public final class SnakeEyes {
             return true;
         }
         return false;
-    }
-
-    /**
-     * @return The number of players in this game.
-     */
-    public static int size() {
-        return players.size();
     }
 }

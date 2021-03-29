@@ -37,7 +37,7 @@ public class GamePanel {
         gridPanel.add(scoreboardPanel);
         gridPanel.add(wholeSep);
 
-        totalPanel.add(getTopPanel(1, "Gambler"));
+        totalPanel.add(SnakeEyes.getBanner());
         totalPanel.add(getSeparator());
         totalPanel.add(gridPanel);
         totalPanel.add(getSeparator());

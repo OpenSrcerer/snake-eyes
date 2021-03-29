@@ -33,8 +33,9 @@ public class RollRequest implements Request {
     @Override
     public void run() {
         SnakeEyes.getRollButton().toggle(); // Lock the button so the user does not click it relentlessly
+        SnakeEyes.getBanner().update("Rolling...");
         simulateRoll(); // Simulate dice being rolled
-        player.roll(getRandomDice());
+        player.roll(getRandomDice()); // Perform internal player dice and score additions that have to be synchronized
         SnakeEyes.getRollButton().toggle(); // Unlock the button because rolling is over
     }
 
@@ -42,7 +43,7 @@ public class RollRequest implements Request {
      * Simulates the dice rolling by picking random dice values and refreshing the Diceboard.
      */
     private void simulateRoll() {
-        for (short rolls = 0; rolls < 20; ++rolls) {
+        for (short rolls = 0; rolls < 19; ++rolls) {
             // Random function I made up to make timer look interesting
             short timer = (short) ((1/3f * Math.pow(rolls, 2)) + 100);
             try {

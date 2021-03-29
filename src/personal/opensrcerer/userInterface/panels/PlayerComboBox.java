@@ -1,6 +1,5 @@
 package personal.opensrcerer.userInterface.panels;
 
-import personal.opensrcerer.userInterface.panels.PanelComponents;
 import personal.opensrcerer.util.Player;
 
 import javax.swing.*;
@@ -33,7 +32,8 @@ public class PlayerComboBox<E> extends JComboBox<E> {
         playerList.add(defaultPlayer);
 
         addActionListener(e -> {
-            playerList.removeAll(); // Clear the list of players
+            playerList.removeAll(); // Clear the JPanel
+            players.clear(); // Clear the list of Players
 
             int selection = getSelectedIndex() + 1;
             for (int index = 0; index < selection; ++index) {

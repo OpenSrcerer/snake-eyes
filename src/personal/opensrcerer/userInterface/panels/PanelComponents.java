@@ -40,7 +40,7 @@ public final class PanelComponents {
             discordGray = new Color(54, 57, 63),
             discordGrayer = new Color(47, 49, 54);
 
-    public static final Font bigTitleFont = new Font("Century Gothic", Font.BOLD, 40);
+    public static final Font bigTitleFont = new Font("Century Gothic", Font.BOLD, 30);
     public static final Font titleFont = new Font("Century Gothic", Font.BOLD, 20);
     public static final Font descriptionFont = new Font("Century Gothic", Font.PLAIN, 14);
     private static final Font actionFont = new Font("Arial", Font.BOLD, 15);
@@ -323,18 +323,6 @@ public final class PanelComponents {
         });
 
         return slider;
-    }
-
-
-    /**
-     * @param round Current round.
-     * @param playerName The player whose turn it is.
-     * @return The bottom panel containing volume controls and other info.
-     */
-    public static JPanel getTopPanel(int round, String playerName) {
-        JPanel bottomPanel = PanelComponents.getJPanel();
-        bottomPanel.add(getLabel("Round " + round + " // Roll, " + playerName + "!", bigTitleFont), BorderLayout.CENTER);
-        return bottomPanel;
     }
 
     /**

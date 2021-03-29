@@ -21,7 +21,6 @@ import javax.swing.*;
  * @version 0.0.1
  * @since 2020-03-20
  */
-
 public class RunProject {
 
     /**

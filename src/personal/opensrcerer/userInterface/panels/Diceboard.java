@@ -95,6 +95,9 @@ public class Diceboard extends JPanel {
 
         pointDiceLabel.setText(player.getPlayerName() + "'s Point Dice: ");
         currentDiceLabel.setText(player.getPlayerName() + "'s Current Dice: ");
+
+        revalidate();
+        repaint();
     }
 
     /**
@@ -104,8 +107,6 @@ public class Diceboard extends JPanel {
      */
     public void refresh(Player player, short[] rollDice) {
         updateElements(player, rollDice);
-        revalidate();
-        repaint();
     }
 
     /**
@@ -114,7 +115,5 @@ public class Diceboard extends JPanel {
      */
     public void refreshUnrolled(Player player) {
         updateElements(player, new short[] { 10, 10 });
-        revalidate();
-        repaint();
     }
 }

@@ -9,32 +9,38 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
+import static personal.opensrcerer.userInterface.panels.PanelComponents.titleFont;
 
 public class Scoreboard extends JPanel {
+
+    private final JPanel innerScoreboard;
 
     /**
      * Returns a modular JPanel scoreboard.
      */
     public Scoreboard() {
         super();
-        styleScoreboard(1);
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setBackground(discordGrayer);
+
+        innerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
+        updateScoreboard();
+        innerScoreboard.setBorder(PanelComponents.getBorder("Scoreboard // Round " + SnakeEyes.getCurrentRound()));
+
+        add(innerScoreboard);
     }
 
     /**
      * Add the proper elements to this scoreboard.
      */
-    public void styleScoreboard(int cursorPosition) {
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        setBackground(discordGrayer);
-
-        JPanel innerScoreboard = getJPanel(BoxLayout.PAGE_AXIS);
-        add(Box.createRigidArea(new Dimension(350, 10)));
+    public void updateScoreboard() {
+        innerScoreboard.removeAll();
+        innerScoreboard.add(Box.createRigidArea(new Dimension(350, 10)));
 
         List<Player> sortedPlayers = SnakeEyes.getPlayers().sorted((a, b) -> b.getScore() - a.getScore()).collect(Collectors.toList());
-        for (int index = 0; index < sortedPlayers.size(); ++index) {
-            Player player = sortedPlayers.get(index);
+        for (Player player : sortedPlayers) {
             JPanel playerCursorPanel = getJPanel();
-            if (index == cursorPosition - 1) { // Condition to add the cursor on the right player
+            if (player.equals(SnakeEyes.getPlayerOnTurn())) { // Condition to add the cursor on the player whose turn it s
                 playerCursorPanel.add(PanelComponents.getCursor());
             }
             playerCursorPanel.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));
@@ -43,18 +49,15 @@ public class Scoreboard extends JPanel {
         }
 
         innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - (SnakeEyes.size() * 37))));
-        innerScoreboard.setBorder(PanelComponents.getBorder("Scoreboard // Round " + SnakeEyes.getCurrentRound()));
-
-        add(innerScoreboard);
     }
 
     /**
      * Update changes on this scoreboard and set the cursor position on a specific player.
-     * @param cursorPosition Position of cursor on the scoreboard.
      */
-    public void refresh(int cursorPosition) {
-        styleScoreboard(cursorPosition);
-        revalidate();
-        repaint();
+    public void refresh() {
+        innerScoreboard.removeAll();
+        updateScoreboard();
+        innerScoreboard.revalidate();
+        innerScoreboard.repaint();
     }
 }
