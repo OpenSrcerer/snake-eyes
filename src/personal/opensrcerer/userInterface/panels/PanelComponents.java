@@ -7,6 +7,7 @@
 package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.RunProject;
+import personal.opensrcerer.actions.RollRequest;
 import personal.opensrcerer.userInterface.MainWindow;
 import personal.opensrcerer.util.ButtonType;
 import personal.opensrcerer.util.RequestDispatcher;
@@ -47,7 +48,7 @@ public final class PanelComponents {
     // -------------------------------------------
 
     // -------- Images --------
-    private static ImageIcon[] imagesList;
+    static ImageIcon[] imagesList;
     // ------------------------
 
     /**
@@ -106,23 +107,6 @@ public final class PanelComponents {
             MainWindow.updateJFrame();
         });
         // Panel Styling and return
-        panel.add(button);
-        panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
-        return panel;
-    }
-
-    /**
-     * @see ButtonType
-     * @return A custom button inside a JPanel that has a border.
-     */
-    public static JPanel getRollButton() {
-        JPanel panel = new JPanel(new GridLayout(1, 1));
-        JButton button = new JButton(imagesList[11]);
-        button.setHorizontalAlignment(SwingConstants.CENTER);
-        setButtonPalette("", button);
-        setMouseListener(button);
-        button.addActionListener(getListener(ButtonType.ROLL));
-        button.setFocusPainted(false);
         panel.add(button);
         panel.setBorder(BorderFactory.createLineBorder(discordLessGray, 1));
         return panel;
@@ -475,7 +459,7 @@ public final class PanelComponents {
      * @param type Type of button.
      * @return An ActionListener according to the button type.
      */
-    private static ActionListener getListener(ButtonType type) {
+    static ActionListener getListener(ButtonType type) {
         // Variable "e" indicates a new lambda action listener
         // FORMAT:
         //        Remove elements from MainWindow WindowPane
@@ -489,7 +473,8 @@ public final class PanelComponents {
                 MainWindow.updateJFrame();
             };
             case ROLL -> e -> {
-
+                // Initiate a new roll request when user presses button
+                new RollRequest(SnakeEyes.getPlayerOnTurn());
             };
             case EXIT -> e -> {
                 MainWindow.disposeJFrame();

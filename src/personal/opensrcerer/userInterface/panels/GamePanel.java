@@ -29,7 +29,7 @@ public class GamePanel {
         gamePanelSep.add(SnakeEyes.getDiceboard());
         gamePanelSep.add(Box.createRigidArea(new Dimension(0, 20)));
         gamePanelSep.add(sep2);
-        gamePanelSep.add(getRollButton());
+        gamePanelSep.add(SnakeEyes.getRollButton());
 
         wholeSep.add(sep);
         wholeSep.add(gamePanelSep);

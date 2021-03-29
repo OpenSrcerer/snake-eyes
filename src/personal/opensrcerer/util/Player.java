@@ -23,7 +23,7 @@ public class Player extends JPanel {
     /**
      * Contains the point dice for a player.
      */
-    private int[] pointDice = null;
+    private short[] pointDice = {10, 10}; // 10, 10 being the question mark (?) dice
 
     /**
      * Shows the player's status in relation to the round.
@@ -49,9 +49,24 @@ public class Player extends JPanel {
 
     /**
      * Rolls the player's dice and performs the appropriate action.
+     * @param dies The dice that were just rolled.
      */
-    public synchronized void roll() {
+    public synchronized void roll(short[] dies) {
 
+    }
+
+    /**
+     * @return If the player is a bot.
+     */
+    public boolean isCpu() {
+        return cpuBox.isSelected();
+    }
+
+    /**
+     * Sets the player's status to a AWAITING_POINT_ROLL.
+     */
+    public void resetStatus() {
+        this.status = PlayerStatus.AWAITING_POINT_ROLL;
     }
 
     /**
@@ -69,16 +84,16 @@ public class Player extends JPanel {
     }
 
     /**
-     * @return If the player is a bot.
+     * @return The point dice for this player.
      */
-    public boolean isCpu() {
-        return cpuBox.isSelected();
+    public short[] getPointDice() {
+        return pointDice;
     }
 
     /**
-     * Sets the player's status to a AWAITING_POINT_ROLL.
+     * @return The Player's status.
      */
-    public void resetStatus() {
-        this.status = PlayerStatus.AWAITING_POINT_ROLL;
+    public PlayerStatus getStatus() {
+        return status;
     }
 }

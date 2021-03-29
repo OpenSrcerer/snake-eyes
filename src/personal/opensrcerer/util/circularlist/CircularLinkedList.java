@@ -50,8 +50,9 @@ public class CircularLinkedList<X> {
 
     /**
      * Advance this LinkedList by one node. To be used externally, because it increments the loop counter.
+     * @return The player that has been advanced to.
      */
-    public void next() {
+    public X next() {
         if (current != null) {
             previous = current; // Make the current node the previous node
             current = previous.next; // Advance the current node
@@ -59,7 +60,10 @@ public class CircularLinkedList<X> {
             if (current.element.equals(firstElement)) {
                 ++timesListLooped; // Increment the times this list has looped
             }
+
+            return current.element;
         }
+        return null;
     }
 
     /**

@@ -44,7 +44,7 @@ public final class MainWindow extends JFrame {
             // Initialize Audio
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(RunProject.class.getResource("/resources/music.wav"));
             clip = AudioSystem.getClip();
-            clip.open(audioIn);
+            //clip.open(audioIn);
             // Initialize used images
             PanelComponents.initializeImages();
             // Set singleton item

@@ -15,6 +15,10 @@ class CircularNode<X> {
      */
     protected CircularNode<X> next;
 
+    /**
+     * Create a new CircularNode with the given data.
+     * @param data Data to store.
+     */
     protected CircularNode(X data) {
         this.element = data;
     }

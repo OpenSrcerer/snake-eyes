@@ -1,7 +1,7 @@
 /*
- * <h3>Made for the Final Project in CS105, due December 4th 2020. <br>
+ * <h3>Made for the Final Project in CS106, due April 1st 2021. <br>
  * This work is licensed under the GNU General Public License v3.0 <br>
- * GNU © 2020 OpenSrcerer</h3>
+ * GNU © 2021 OpenSrcerer</h3>
  */
 
 package personal.opensrcerer;
@@ -25,7 +25,7 @@ import javax.swing.*;
 public class RunProject {
 
     /**
-     * flag to check if look and feel change was successful
+     * Flag to check if look and feel change was successful.
     */
     private static boolean lookAndFeelSuccessful = false;
 
