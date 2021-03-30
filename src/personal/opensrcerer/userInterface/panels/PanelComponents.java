@@ -17,9 +17,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /**
  * This class is used to retrieve custom stylized JComponents
@@ -216,6 +214,17 @@ public final class PanelComponents {
         field.setBackground(discordGrayer);
         field.setForeground(discordLightGray);
         field.setCaretColor(discordLightGray);
+
+        // Key event interceptor
+        field.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (field.getText().length() >= 10 ) { // Limit TextField to 10 characters.
+                    e.consume(); // Discard the event.
+                }
+            }
+        });
+
         setMouseListener(field);
         return field;
     }

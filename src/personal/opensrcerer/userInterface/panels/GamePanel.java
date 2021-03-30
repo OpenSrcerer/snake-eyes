@@ -22,7 +22,9 @@ public class GamePanel {
         sep2.setPreferredSize(new Dimension(350, 1));
 
         // Left side of panel, scoreboard
+        scoreboardPanel.add(Box.createRigidArea(new Dimension(0, 35)));
         scoreboardPanel.add(getSkeletonLogo());
+        scoreboardPanel.add(Box.createRigidArea(new Dimension(0, 36)));
         scoreboardPanel.add(SnakeEyes.getScoreboard());
 
         gamePanelSep.add(Box.createRigidArea(new Dimension(0, 20)));

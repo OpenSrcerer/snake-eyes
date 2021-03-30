@@ -46,7 +46,7 @@ public class Scoreboard extends JPanel {
             innerScoreboard.add(playerCursorPanel);
         });
 
-        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - (SnakeEyes.size() * 37))));
+        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 329 - (SnakeEyes.size() * 37))));
         innerScoreboard.setBorder(PanelComponents.getBorder("Scoreboard // Round " + SnakeEyes.getCurrentRound()));
     }
 

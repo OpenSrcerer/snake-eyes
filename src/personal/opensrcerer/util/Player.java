@@ -70,11 +70,11 @@ public class Player extends JPanel {
             // Actions appropriate for the first roll of the round
             if (diceSum == 7 || diceSum == 11) {
                 score += 10;
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (+10 Points)!");
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (+10 Points)");
                 status = PlayerStatus.FINISHED_ROUND;
             } else if (diceSum == 2 || diceSum == 3 || diceSum == 12) {
                 score -= 5;
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (-5 Points)!");
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (-5 Points)");
                 status = PlayerStatus.FINISHED_ROUND;
             } else { // Set point roll dice.
                 pointDice[0] = dice[0];
@@ -87,11 +87,11 @@ public class Player extends JPanel {
             if (diceSum == pointDice[0] + pointDice[1]) {
                 score += 10 - consecutiveRolls;
                 SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) +
-                        " " + diceSum + "! (" + (10 - consecutiveRolls) + " Points!)");
+                        " " + diceSum + "! (" + (10 - consecutiveRolls) + " Points)");
                 status = PlayerStatus.FINISHED_ROUND;
             } else if (diceSum == 7) {
                 score -= 3;
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (-3 Points)!");
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (-3 Points)");
                 status = PlayerStatus.FINISHED_ROUND;
             } else {
                 SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "!");
