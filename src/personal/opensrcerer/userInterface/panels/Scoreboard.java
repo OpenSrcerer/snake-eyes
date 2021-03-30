@@ -29,16 +29,6 @@ public class Scoreboard extends JPanel {
     }
 
     /**
-     * Update changes on this scoreboard and set the cursor position on a specific player.
-     */
-    public void refresh() {
-        innerScoreboard.removeAll();
-        updateScoreboard();
-        innerScoreboard.revalidate();
-        innerScoreboard.repaint();
-    }
-
-    /**
      * Add the proper elements to this scoreboard.
      */
     private void updateScoreboard() {
@@ -53,10 +43,20 @@ public class Scoreboard extends JPanel {
                 playerCursorPanel.add(PanelComponents.getCursor());
             }
             playerCursorPanel.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));
-            // TODO fix alignment
             innerScoreboard.add(playerCursorPanel);
         });
 
         innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - (SnakeEyes.size() * 37))));
+        innerScoreboard.setBorder(PanelComponents.getBorder("Scoreboard // Round " + SnakeEyes.getCurrentRound()));
+    }
+
+    /**
+     * Update changes on this scoreboard and set the cursor position on a specific player.
+     */
+    public void refresh() {
+        innerScoreboard.removeAll();
+        updateScoreboard();
+        innerScoreboard.revalidate();
+        innerScoreboard.repaint();
     }
 }

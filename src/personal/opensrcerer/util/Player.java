@@ -23,12 +23,17 @@ public class Player extends JPanel {
     /**
      * Contains the point dice for a player.
      */
-    private final short[] pointDice = {11, 11}; // 10, 10 being the question mark (?) dice
+    private final short[] pointDice = {11, 11}; // 10, 10 being the question mark (?) dice indexes
 
     /**
      * Shows the player's status in relation to the round.
      */
     private PlayerStatus status = PlayerStatus.AWAITING_POINT_ROLL;
+
+    /**
+     * Shows how many times a player has consecutively rolled without changing their score.
+     */
+    private int consecutiveRolls;
 
     /**
      * Contains the player's score.
@@ -56,17 +61,20 @@ public class Player extends JPanel {
      * @param dice The dice that were just rolled.
      */
     public synchronized void roll(short[] dice) {
-        // Use index values to show dies
+        // Show dies that were just rolled to the player(s)
         SnakeEyes.getDiceboard().refresh(dice);
-        // Calculate the points for this roll
+        // Calculate the sum of the dice
+        int diceSum = dice[0] + dice[1];
+
         if (status.equals(PlayerStatus.AWAITING_POINT_ROLL)) {
-            if (dice[0] + dice[1] == 7 || dice[0] + dice[1] == 11) {
+            // Actions appropriate for the first roll of the round
+            if (diceSum == 7 || diceSum == 11) {
                 score += 10;
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled a(n) " + (dice[0] + dice[1]) + "! +10 Points!");
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (+10 Points)!");
                 status = PlayerStatus.FINISHED_ROUND;
-            } else if (dice[0] + dice[1] == 2 || dice[0] + dice[1] == 3 || dice[0] + dice[1] == 12) {
+            } else if (diceSum == 2 || diceSum == 3 || diceSum == 12) {
                 score -= 5;
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled a(n) " + (dice[0] + dice[1]) + "! -5 Points!");
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (-5 Points)!");
                 status = PlayerStatus.FINISHED_ROUND;
             } else { // Set point roll dice.
                 pointDice[0] = dice[0];
@@ -75,44 +83,34 @@ public class Player extends JPanel {
                 status = PlayerStatus.PLAYING;
             }
         } else if (status.equals(PlayerStatus.PLAYING)) {
-            if (dice[0] + dice[1] == pointDice[0] + pointDice[1]) {
-                score += 10;
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled a(n) " + (dice[0] + dice[1]) + "! +X Points!");
+            // Actions appropriate for the other rolls of the round
+            if (diceSum == pointDice[0] + pointDice[1]) {
+                score += 10 - consecutiveRolls;
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) +
+                        " " + diceSum + "! (" + (10 - consecutiveRolls) + " Points!)");
                 status = PlayerStatus.FINISHED_ROUND;
-            } else if (dice[0] + dice[1] == 7) {
+            } else if (diceSum == 7) {
                 score -= 3;
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled a(n) " + (dice[0] + dice[1]) + "! -3 Points!");
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "! (-3 Points)!");
                 status = PlayerStatus.FINISHED_ROUND;
             } else {
-                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled a(n) " + (dice[0] + dice[1]) + "!");
+                SnakeEyes.getBanner().update(getPlayerName() + ", you rolled " + getArticle(diceSum) + " " + diceSum + "!");
             }
         } else {
             throw new IllegalArgumentException("Player who has finished the round cannot be rolling!");
         }
+        ++consecutiveRolls;
 
         SnakeEyes.getScoreboard().refresh();
+        SnakeEyes.getDiceboard().refresh(dice);
         SnakeEyes.nextTurn();
     }
 
     /**
-     * @return If the player is a bot.
+     * @return The Player's status.
      */
-    public boolean isCpu() {
-        return cpuBox.isSelected();
-    }
-
-    /**
-     * Sets the player's status to a AWAITING_POINT_ROLL.
-     */
-    public void resetStatus() {
-        this.status = PlayerStatus.AWAITING_POINT_ROLL;
-    }
-
-    /**
-     * @return The player's score.
-     */
-    public int getScore() {
-        return score;
+    public PlayerStatus getStatus() {
+        return status;
     }
 
     /**
@@ -130,9 +128,37 @@ public class Player extends JPanel {
     }
 
     /**
-     * @return The Player's status.
+     * @return The player's score.
      */
-    public PlayerStatus getStatus() {
-        return status;
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * @return If the player is a bot.
+     */
+    public boolean isCpu() {
+        return cpuBox.isSelected();
+    }
+
+    /**
+     * Sets the player's status to a AWAITING_POINT_ROLL, reset consecutive rolls and the point dice.
+     */
+    public void resetStatus() {
+        this.status = PlayerStatus.AWAITING_POINT_ROLL;
+        this.pointDice[0] = 11;
+        this.pointDice[1] = 11;
+        this.consecutiveRolls = 0;
+    }
+
+    /**
+     * @param sum The sum of the dice for this roll.
+     * @return The appropriate article for the number.
+     */
+    private String getArticle(int sum) {
+        return switch (sum) {
+            case 8, 11 -> "an";
+            default -> "a";
+        };
     }
 }

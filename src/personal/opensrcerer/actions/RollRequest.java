@@ -10,6 +10,8 @@ import personal.opensrcerer.util.Player;
 import personal.opensrcerer.util.RequestDispatcher;
 import personal.opensrcerer.util.SnakeEyes;
 
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +42,21 @@ public class RollRequest implements Request {
         // Unlock the 5 seconds later (give time to player to read their score)
         RequestDispatcher.schedule(() -> {
             SnakeEyes.getRollButton().toggle();
-            SnakeEyes.getBanner().update();
+
+            if (SnakeEyes.isFinished()) {
+                // Calculate the winning player using a maximum function
+                Optional<Player> winner = SnakeEyes.getPlayers().max(Comparator.comparing(Player::getScore));
+                // If the Optional value is not null
+                if (winner.isPresent()) {
+                    // Show winner banner
+                    SnakeEyes.getBanner().update("The game has finished! Winner: " + winner.get().getPlayerName());
+                } else {
+                    SnakeEyes.getBanner().update("The game has finished!"); // Show generic game ended banner
+                }
+            } else {
+                SnakeEyes.getBanner().update();
+            }
+
             SnakeEyes.getScoreboard().refresh();
             SnakeEyes.getDiceboard().refreshUnrolled();
         }, 5, TimeUnit.SECONDS);

@@ -37,7 +37,7 @@ public final class SnakeEyes {
     /**
      * A custom Circular Linked List that contains all the JPlayers in the game.
      */
-    private static CircularLinkedList<Player> players = null;
+    private static CircularLinkedList<Player> players;
 
     /**
      * The total rounds in this game.
@@ -50,10 +50,16 @@ public final class SnakeEyes {
     private static int currentRound;
 
     /**
+     * Used to show if the ongoing game has finished.
+     */
+    private static boolean finished;
+
+    /**
      * Resets the singleton instance of the ongoing game.
      */
     public static void resetGame(Player[] players, int totalRounds) {
         // Values first
+        SnakeEyes.finished = false;
         SnakeEyes.players = new CircularLinkedList<>(players);
         SnakeEyes.totalRounds = totalRounds;
         SnakeEyes.currentRound = 1;
@@ -162,7 +168,7 @@ public final class SnakeEyes {
             players.setToFirst(); // Give the turn to the first player
         } else {
             System.out.println("Game has finished.");
-            // TODO finish the game
+            finished = true;
         }
     }
 
@@ -171,5 +177,12 @@ public final class SnakeEyes {
      */
     public static int size() {
         return players.size();
+    }
+
+    /**
+     * @return Whether this game has finished.
+     */
+    public static boolean isFinished() {
+        return finished;
     }
 }
