@@ -4,7 +4,7 @@ import personal.opensrcerer.userInterface.panels.Banner;
 import personal.opensrcerer.userInterface.panels.Diceboard;
 import personal.opensrcerer.userInterface.panels.RollButton;
 import personal.opensrcerer.userInterface.panels.Scoreboard;
-import personal.opensrcerer.util.circularlist.CircularLinkedList;
+import personal.opensrcerer.util.circularList.CircularLinkedList;
 
 import java.util.stream.Stream;
 

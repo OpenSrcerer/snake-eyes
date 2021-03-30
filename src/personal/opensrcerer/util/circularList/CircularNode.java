@@ -1,4 +1,4 @@
-package personal.opensrcerer.util.circularlist;
+package personal.opensrcerer.util.circularList;
 
 /**
  * This class is a node for the Circular Linked List.

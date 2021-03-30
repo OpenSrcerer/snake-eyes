@@ -1,4 +1,4 @@
-package personal.opensrcerer.util.circularlist;
+package personal.opensrcerer.util.circularList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
