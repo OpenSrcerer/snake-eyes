@@ -57,7 +57,7 @@ public class Player extends JPanel {
      */
     public synchronized void roll(short[] dice) {
         // Use index values to show dies
-        SnakeEyes.getDiceboard().refresh(this, dice);
+        SnakeEyes.getDiceboard().refresh(dice);
         // Calculate the points for this roll
         if (status.equals(PlayerStatus.AWAITING_POINT_ROLL)) {
             if (dice[0] + dice[1] == 7 || dice[0] + dice[1] == 11) {
@@ -90,7 +90,6 @@ public class Player extends JPanel {
             throw new IllegalArgumentException("Player who has finished the round cannot be rolling!");
         }
 
-        SnakeEyes.getDiceboard().refresh(this, dice);
         SnakeEyes.getScoreboard().refresh();
         SnakeEyes.nextTurn();
     }

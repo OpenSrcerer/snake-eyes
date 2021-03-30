@@ -118,8 +118,8 @@ public final class PanelComponents {
      * @return Customized Border.
      */
     public static Border getBorder(String borderTitle) {
-        Border templateborder = BorderFactory.createLineBorder(discordLightGray, 2, true);
-        return BorderFactory.createTitledBorder(templateborder, borderTitle,
+        Border templateBorder = BorderFactory.createLineBorder(discordLightGray, 2, true);
+        return BorderFactory.createTitledBorder(templateBorder, borderTitle,
                 TitledBorder.CENTER, TitledBorder.TOP, descriptionFont, discordLightGray);
     }
 

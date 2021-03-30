@@ -86,7 +86,9 @@ public class Diceboard extends JPanel {
     /**
      * Update the dynamic elements of this Diceboard.
      */
-    public void updateElements(Player player, short[] rollDice) {
+    public void updateElements(short[] rollDice) {
+        Player player = SnakeEyes.getPlayerOnTurn();
+
         // Update the icons of all the dice.
         // All values are decremented to convert from value to index.
         pointDie1.setIcon(imagesList[player.getPointDice()[0] - 1]);
@@ -103,18 +105,16 @@ public class Diceboard extends JPanel {
 
     /**
      * Update changes on this DiceBoard.
-     * @param player The player on turn.
      * @param rollDice The dice that were just rolled.
      */
-    public void refresh(Player player, short[] rollDice) {
-        updateElements(player, rollDice);
+    public void refresh(short[] rollDice) {
+        updateElements(rollDice);
     }
 
     /**
      * Update changes on this DiceBoard, using blank dice for the rolled dice.
-     * @param player The player on turn.
      */
-    public void refreshUnrolled(Player player) {
-        updateElements(player, new short[] { 10, 10 });
+    public void refreshUnrolled() {
+        updateElements(new short[] { 11, 11 });
     }
 }

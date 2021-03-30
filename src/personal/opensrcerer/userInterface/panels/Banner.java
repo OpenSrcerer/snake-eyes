@@ -20,8 +20,8 @@ public class Banner extends JPanel {
     public Banner() {
         super();
         setBackground(discordGrayer);
-        bannerText = getLabel("Round " + SnakeEyes.getCurrentRound() + " // Roll, " +
-                        SnakeEyes.getPlayerOnTurn().getPlayerName() + "!", bigTitleFont);
+        bannerText = getLabel("Round (" + SnakeEyes.getCurrentRound() + "/" + SnakeEyes.getTotalRounds() + ") // Roll, " +
+                SnakeEyes.getPlayerOnTurn().getPlayerName() + "!", bigTitleFont);
         add(bannerText, BorderLayout.CENTER);
     }
 
@@ -29,7 +29,7 @@ public class Banner extends JPanel {
      * Updates the banner's message to the preset default message.
      */
     public void update() {
-        bannerText.setText("Round " + SnakeEyes.getCurrentRound() + " // Roll, " +
+        bannerText.setText("Round (" + SnakeEyes.getCurrentRound() + "/" + SnakeEyes.getTotalRounds() + ") // Roll, " +
                 SnakeEyes.getPlayerOnTurn().getPlayerName() + "!");
         revalidate();
         repaint();

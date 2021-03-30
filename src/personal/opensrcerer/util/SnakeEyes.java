@@ -47,17 +47,19 @@ public final class SnakeEyes {
     /**
      * This game's current round.
      */
-    private static int currentRound = 1;
+    private static int currentRound;
 
     /**
      * Resets the singleton instance of the ongoing game.
      */
     public static void resetGame(Player[] players, int totalRounds) {
-        SnakeEyes.rollButton = new RollButton();
+        // Values first
         SnakeEyes.players = new CircularLinkedList<>(players);
-        SnakeEyes.banner = new Banner();
         SnakeEyes.totalRounds = totalRounds;
         SnakeEyes.currentRound = 1;
+        // Instantiate GUI Elements last
+        SnakeEyes.rollButton = new RollButton();
+        SnakeEyes.banner = new Banner();
         SnakeEyes.diceboard = new Diceboard();
         SnakeEyes.scoreboard = new Scoreboard();
     }
@@ -126,7 +128,6 @@ public final class SnakeEyes {
      * If it's the turn of the last player on the list, the round advances, or the game ends.
      */
     public static void nextTurn() {
-        System.out.println(currentRound);
         nextPlayer(); // Go to the next player
 
         /*if (players.isAtFirst()) { // If the list of players just looped once

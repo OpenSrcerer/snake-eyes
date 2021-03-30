@@ -11,6 +11,7 @@ import personal.opensrcerer.util.RequestDispatcher;
 import personal.opensrcerer.util.SnakeEyes;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Add description here
@@ -36,7 +37,13 @@ public class RollRequest implements Request {
         SnakeEyes.getBanner().update("Rolling...");
         simulateRoll(); // Simulate dice being rolled
         player.roll(getRandomDice()); // Perform internal player dice and score additions that have to be synchronized
-        SnakeEyes.getRollButton().toggle(); // Unlock the button because rolling is over
+        // Unlock the 5 seconds later (give time to player to read their score)
+        RequestDispatcher.schedule(() -> {
+            SnakeEyes.getRollButton().toggle();
+            SnakeEyes.getBanner().update();
+            SnakeEyes.getScoreboard().refresh();
+            SnakeEyes.getDiceboard().refreshUnrolled();
+        }, 5, TimeUnit.SECONDS);
     }
 
     /**
@@ -51,7 +58,7 @@ public class RollRequest implements Request {
             } catch (InterruptedException ex) {
                 System.out.println("Something went wrong! " + ex);
             }
-            SnakeEyes.getDiceboard().refresh(player, getRandomDice());
+            SnakeEyes.getDiceboard().refresh(getRandomDice());
         }
     }
 

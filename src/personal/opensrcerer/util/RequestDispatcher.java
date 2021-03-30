@@ -8,9 +8,10 @@ package personal.opensrcerer.util;
 
 import personal.opensrcerer.actions.Request;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class executes every request that gets
@@ -21,9 +22,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public final class RequestDispatcher {
 
     /**
-     * ExecutorService to manage one request at a time.
+     * ExecutorService with a thread to manage one request at a time, and one for scheduling.
      */
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 
     /**
      * Queue accessible by the ExecutorService's single thread that manages requests.
@@ -59,6 +60,16 @@ public final class RequestDispatcher {
      */
     public static void queueRequest(Request request) {
         requests.offer(request);
+    }
+
+    /**
+     * Schedule a Runnable on this ScheduledExecutorService.
+     * @param r Runnable to schedule.
+     * @param delay Value of the delay.
+     * @param unit The TimeUnit of the delay.
+     */
+    public static void schedule(Runnable r, long delay, TimeUnit unit) {
+        executor.schedule(r, delay, unit);
     }
 
     /**

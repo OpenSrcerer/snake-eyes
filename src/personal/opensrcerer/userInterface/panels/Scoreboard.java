@@ -5,11 +5,9 @@ import personal.opensrcerer.util.SnakeEyes;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
-import static personal.opensrcerer.userInterface.panels.PanelComponents.titleFont;
 
 public class Scoreboard extends JPanel {
 
@@ -31,27 +29,6 @@ public class Scoreboard extends JPanel {
     }
 
     /**
-     * Add the proper elements to this scoreboard.
-     */
-    public void updateScoreboard() {
-        innerScoreboard.removeAll();
-
-        List<Player> sortedPlayers = SnakeEyes.getPlayers().sorted((a, b) -> b.getScore() - a.getScore()).collect(Collectors.toList());
-
-        for (Player player : sortedPlayers) {
-            JPanel playerCursorPanel = getJPanel();
-            if (player.equals(SnakeEyes.getPlayerOnTurn())) { // Add the cursor on the player whose turn it is
-                playerCursorPanel.add(PanelComponents.getCursor());
-            }
-            playerCursorPanel.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));
-            // TODO fix alignment
-            innerScoreboard.add(playerCursorPanel);
-        }
-
-        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - (SnakeEyes.size() * 37))));
-    }
-
-    /**
      * Update changes on this scoreboard and set the cursor position on a specific player.
      */
     public void refresh() {
@@ -59,5 +36,27 @@ public class Scoreboard extends JPanel {
         updateScoreboard();
         innerScoreboard.revalidate();
         innerScoreboard.repaint();
+    }
+
+    /**
+     * Add the proper elements to this scoreboard.
+     */
+    private void updateScoreboard() {
+        innerScoreboard.removeAll();
+
+        // For each loop used in a Stream
+        SnakeEyes.getPlayers()
+            .sorted(Comparator.comparing(Player::getPlayerName)) // Sort the Stream alphabetically depending on the player name
+            .forEach(player -> { // Refresh every name on the list
+            JPanel playerCursorPanel = getJPanel();
+            if (player.equals(SnakeEyes.getPlayerOnTurn())) { // Add the cursor on the player whose turn it is
+                playerCursorPanel.add(PanelComponents.getCursor());
+            }
+            playerCursorPanel.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));
+            // TODO fix alignment
+            innerScoreboard.add(playerCursorPanel);
+        });
+
+        innerScoreboard.add(Box.createRigidArea(new Dimension(0, 300 - (SnakeEyes.size() * 37))));
     }
 }
