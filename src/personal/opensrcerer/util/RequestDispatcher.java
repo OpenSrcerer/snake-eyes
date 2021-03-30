@@ -43,7 +43,7 @@ public final class RequestDispatcher {
                     Request request = requests.take();
                     request.run();
                 } catch (Exception | Error e) {
-                    e.printStackTrace();
+                    System.out.println("Something went wrong! " + e.getMessage());
                 }
             }
         };

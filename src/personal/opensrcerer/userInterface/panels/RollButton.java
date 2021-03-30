@@ -9,6 +9,9 @@ import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
 public class RollButton extends JPanel {
 
+    /**
+     * The JButton object wrapped by this JPanel.
+     */
     private final JButton rollButton;
 
     /**

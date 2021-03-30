@@ -52,8 +52,8 @@ public class Diceboard extends JPanel {
         Player currentPlayer = SnakeEyes.getPlayerOnTurn();
 
         // Init all Diceboard dice with a 10.
-        pointDie1 = getImageLabel(currentPlayer.getPointDice()[0]);
-        pointDie2 = getImageLabel(currentPlayer.getPointDice()[1]);
+        pointDie1 = getImageLabel(currentPlayer.getPointDice()[0] - 1);
+        pointDie2 = getImageLabel(currentPlayer.getPointDice()[1] - 1);
         rollDie1 = getImageLabel(10);
         rollDie2 = getImageLabel(10);
         // Change all the Diceboard labels to default values.
@@ -87,11 +87,12 @@ public class Diceboard extends JPanel {
      * Update the dynamic elements of this Diceboard.
      */
     public void updateElements(Player player, short[] rollDice) {
-        // Update the icons of all the dice
-        pointDie1.setIcon(imagesList[player.getPointDice()[0]]);
-        pointDie2.setIcon(imagesList[player.getPointDice()[1]]);
-        rollDie1.setIcon(imagesList[rollDice[0]]);
-        rollDie2.setIcon(imagesList[rollDice[1]]);
+        // Update the icons of all the dice.
+        // All values are decremented to convert from value to index.
+        pointDie1.setIcon(imagesList[player.getPointDice()[0] - 1]);
+        pointDie2.setIcon(imagesList[player.getPointDice()[1] - 1]);
+        rollDie1.setIcon(imagesList[rollDice[0] - 1]);
+        rollDie2.setIcon(imagesList[rollDice[1] - 1]);
 
         pointDiceLabel.setText(player.getPlayerName() + "'s Point Dice: ");
         currentDiceLabel.setText(player.getPlayerName() + "'s Current Dice: ");

@@ -56,13 +56,12 @@ public class RollRequest implements Request {
     }
 
     /**
-     * @return A pseudorandom short from 0 - 5 that matches a die's number - 1.
-     * This is the case because the die images are stored in an array and the indexes for 1 - 6 are 0 - 5.
+     * @return A pseudorandom short from 1 - 6 that matches a die's number.
      */
     private static short[] getRandomDice() {
         return new short[] {
-                (short) ThreadLocalRandom.current().nextInt(0, 6),
-                (short) ThreadLocalRandom.current().nextInt(0, 6)
+                (short) ThreadLocalRandom.current().nextInt(1, 7),
+                (short) ThreadLocalRandom.current().nextInt(1, 7)
         };
     }
 }

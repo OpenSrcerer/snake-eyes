@@ -23,7 +23,7 @@ public class Player extends JPanel {
     /**
      * Contains the point dice for a player.
      */
-    private final short[] pointDice = {10, 10}; // 10, 10 being the question mark (?) dice
+    private final short[] pointDice = {11, 11}; // 10, 10 being the question mark (?) dice
 
     /**
      * Shows the player's status in relation to the round.
@@ -35,6 +35,10 @@ public class Player extends JPanel {
      */
     private int score;
 
+    /**
+     * Create a new player, ordered by a number from 1 - 8 on the player list.
+     * @param playerNumber The ordinal number.
+     */
     public Player(int playerNumber) {
         super();
         setBackground(discordGrayer);
@@ -54,9 +58,6 @@ public class Player extends JPanel {
     public synchronized void roll(short[] dice) {
         // Use index values to show dies
         SnakeEyes.getDiceboard().refresh(this, dice);
-        // Increment to calculate real dice values
-        dice[0]++;
-        dice[1]++;
         // Calculate the points for this roll
         if (status.equals(PlayerStatus.AWAITING_POINT_ROLL)) {
             if (dice[0] + dice[1] == 7 || dice[0] + dice[1] == 11) {
@@ -70,7 +71,7 @@ public class Player extends JPanel {
             } else { // Set point roll dice.
                 pointDice[0] = dice[0];
                 pointDice[1] = dice[1];
-                SnakeEyes.getBanner().update(getPlayerName() + ", your point dice are [" + dice[0] + ", " + dice[1] + "]");
+                SnakeEyes.getBanner().update(getPlayerName() + ", your point dice are [" + dice[0] + ", " + dice[1] + "].");
                 status = PlayerStatus.PLAYING;
             }
         } else if (status.equals(PlayerStatus.PLAYING)) {
@@ -88,9 +89,6 @@ public class Player extends JPanel {
         } else {
             throw new IllegalArgumentException("Player who has finished the round cannot be rolling!");
         }
-        // Decrement to calculate index dice values
-        dice[0]--;
-        dice[1]--;
 
         SnakeEyes.getDiceboard().refresh(this, dice);
         SnakeEyes.getScoreboard().refresh();

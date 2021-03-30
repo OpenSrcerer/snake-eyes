@@ -3,6 +3,7 @@ package personal.opensrcerer.util.circularlist;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * An implementation of a Circular Linked List that is used in the SnakeEyes game to pass turns in a circular fashion.
@@ -26,14 +27,9 @@ public class CircularLinkedList<X> {
     private CircularNode<X> previous = null;
 
     /**
-     * Represents the times that this list has done a full loop.
+     * Contains the number of elements in this linked list.
      */
-    private int timesListLooped = 0;
-
-    /**
-     * Represents the times that this list has done a full loop.
-     */
-    private int size = 0;
+    private int size;
 
     /**
      * Construct a new CircularLinkedList with no elements.
@@ -49,37 +45,19 @@ public class CircularLinkedList<X> {
     }
 
     /**
-     * Advance this LinkedList by one node. To be used externally, because it increments the loop counter.
-     * @return The player that has been advanced to.
-     */
-    public X next() {
-        if (current != null) {
-            previous = current; // Make the current node the previous node
-            current = previous.next; // Advance the current node
-
-            if (current.element.equals(firstElement)) {
-                ++timesListLooped; // Increment the times this list has looped
-            }
-
-            return current.element;
-        }
-        return null;
-    }
-
-    /**
      * Add an element to this LinkedList.
      * @param data Data to insert.
      */
     public void add(X data) {
         this.insert(data);
-        this.advance();
+        this.next();
         ++size;
     }
 
     /**
-     * Advance this LinkedList by one node. Used for adding elements.
+     * Advance this LinkedList by one node.
      */
-    private void advance() {
+    public void next() {
         if (current != null) {
             previous = current; // Make the current node the previous node
             current = previous.next; // Advance the current node
@@ -111,11 +89,10 @@ public class CircularLinkedList<X> {
     public List<X> getAll() {
         ArrayList<X> elements = new ArrayList<>();
 
-        elements.add(current.element); // Add the first element and advance
-        advance();
-        while (!isAtFirst()) {
+        // Loop over the whole list and retrieve every element
+        for (int index = 0; index < size; ++index) {
             elements.add(current.element);
-            advance();
+            next();
         }
 
         return elements;
@@ -129,13 +106,6 @@ public class CircularLinkedList<X> {
     }
 
     /**
-     * @return The number of times this list has looped.
-     */
-    public int getTimesListLooped() {
-        return timesListLooped;
-    }
-
-    /**
      * @return The size of this LinkedList.
      */
     public int size() {
@@ -143,9 +113,34 @@ public class CircularLinkedList<X> {
     }
 
     /**
-     * @return Whether this List's current node contains the firstly added element.
+     * @return The number of elements in this list that satisfy the given Predicate.
      */
-    public boolean isAtFirst() {
-        return current.element.equals(firstElement);
+    public int getElementsThat(Predicate<X> predicate) {
+        return (int) getAll().stream().filter(predicate).count();
+    }
+
+    /**
+     * This method sets this list's current element to the closest next element on the list
+     * that satisfy the given Predicate. Returns true upon successfully finding a match.
+     * If the list is looped fully and an element is not found, this method returns false.
+     * @return True if successfully set, false otherwise.
+     */
+    public boolean advanceTo(Predicate<X> predicate) {
+        for (int index = 0; index < size; ++index) {
+            next(); // Advance to the next element
+            if (predicate.test(getCurrent())) {
+                return true; // Test if the element matches, return true if found.
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Set the list's current node to the first node.
+     */
+    public void setToFirst() {
+        while (!current.element.equals(firstElement)) {
+            next();
+        }
     }
 }

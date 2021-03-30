@@ -35,12 +35,12 @@ public class Scoreboard extends JPanel {
      */
     public void updateScoreboard() {
         innerScoreboard.removeAll();
-        innerScoreboard.add(Box.createRigidArea(new Dimension(350, 10)));
 
         List<Player> sortedPlayers = SnakeEyes.getPlayers().sorted((a, b) -> b.getScore() - a.getScore()).collect(Collectors.toList());
+
         for (Player player : sortedPlayers) {
             JPanel playerCursorPanel = getJPanel();
-            if (player.equals(SnakeEyes.getPlayerOnTurn())) { // Condition to add the cursor on the player whose turn it s
+            if (player.equals(SnakeEyes.getPlayerOnTurn())) { // Add the cursor on the player whose turn it is
                 playerCursorPanel.add(PanelComponents.getCursor());
             }
             playerCursorPanel.add(getLabel(player.getPlayerName() + " - Score: " + player.getScore(), titleFont));

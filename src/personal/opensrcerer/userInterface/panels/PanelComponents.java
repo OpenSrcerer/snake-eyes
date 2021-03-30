@@ -471,28 +471,4 @@ public final class PanelComponents {
             default -> throw new IllegalStateException("Unexpected value: " + type);
         };
     }
-
-    /**
-     * Retrieves a listener according to what a specific button should do when clicked.
-     * Used for GUI request listeners.
-     * @param game The game that this listener will update.
-     * @return Specific ActionListener
-     */
-    private static ActionListener getListener(ButtonType type, SnakeEyes game) {
-
-        // Variable "e" indicates a new lambda action listener
-        // FORMAT:
-        //        Create new specific request (args)
-
-        // TODO
-        return switch (type) {
-            case PLAY -> e -> {
-                MainWindow.getWindowPane().removeAll();
-                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-                GamePanel.setComponents(MainWindow.getWindowPane());
-                MainWindow.updateJFrame();
-            };
-            default -> throw new IllegalArgumentException("Invalid Button Listener");
-        };
-    }
 }

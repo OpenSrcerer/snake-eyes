@@ -1,6 +1,5 @@
 package personal.opensrcerer.util;
 
-import personal.opensrcerer.actions.RollRequest;
 import personal.opensrcerer.userInterface.panels.Banner;
 import personal.opensrcerer.userInterface.panels.Diceboard;
 import personal.opensrcerer.userInterface.panels.RollButton;
@@ -126,18 +125,43 @@ public final class SnakeEyes {
      * Advances the turn to the next player.
      * If it's the turn of the last player on the list, the round advances, or the game ends.
      */
-    public static synchronized void nextTurn() {
-        Player currentPlayer = players.next(); // Advance the turn
+    public static void nextTurn() {
+        System.out.println(currentRound);
+        nextPlayer(); // Go to the next player
 
-        // Loop to skip over players who have finished the round
-        while (currentPlayer.getStatus().equals(PlayerStatus.FINISHED_ROUND)) {
-            currentPlayer = players.next(); // Advance the turn
-        }
-
-        if (players.isAtFirst()) { // If the list of players just looped once
-            if (nextRound() && currentPlayer.isCpu()) { // Advance the round
-                new RollRequest(currentPlayer); // Roll the bot player automatically
+        /*if (players.isAtFirst()) { // If the list of players just looped once
+            if (nextRound() && getPlayerOnTurn().isCpu()) { // Advance the round
+                new RollRequest(getPlayerOnTurn()); // Roll the bot player automatically
             }
+        }*/
+    }
+
+    /**
+     * Checks if the round is about to end, then advances the turn to the next player.
+     */
+    private static void nextPlayer() {
+        // Filters the Stream of Players to contain only the players who have finished and then counts the total
+        int finishedPlayers = players.getElementsThat(player -> player.getStatus().equals(PlayerStatus.FINISHED_ROUND));
+        if (finishedPlayers == size()) { // If all players have finished rolling
+            nextRound(); // Go to the next round, or finish the game
+        } else {
+            // Advance the turn to the next AVAILABLE player that hasn't finished
+            players.advanceTo(player -> !player.getStatus().equals(PlayerStatus.FINISHED_ROUND));
+        }
+    }
+
+    /**
+     * Advance the game to the next round.
+     * If there are no more rounds, the game finishes.
+     */
+    private static void nextRound() {
+        if (currentRound < totalRounds) { // If the current round is at a lesser value than the total rounds
+            currentRound++; // Advance to the next round
+            getPlayers().forEach(Player::resetStatus); // Resets the players' statuses to unrolled
+            players.setToFirst(); // Give the turn to the first player
+        } else {
+            System.out.println("Game has finished.");
+            // TODO finish the game
         }
     }
 
@@ -146,21 +170,5 @@ public final class SnakeEyes {
      */
     public static int size() {
         return players.size();
-    }
-
-    /**
-     * Advance the game to the next round.
-     * If there are no more rounds, the game finishes.
-     * @return True if game finished, false if it didn't.
-     */
-    private static boolean nextRound() {
-        if (currentRound < totalRounds) { // If the current round is at a lesser value than the total rounds
-            currentRound++; // Increment
-            getPlayers().forEach(Player::resetStatus); // Resets the player's status to unrolled
-        } else {
-            // TODO finish the game
-            return true;
-        }
-        return false;
     }
 }
