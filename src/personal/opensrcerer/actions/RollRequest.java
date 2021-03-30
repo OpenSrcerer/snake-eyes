@@ -41,7 +41,11 @@ public class RollRequest implements Request {
         SnakeEyes.getBanner().update("Rolling...");
         simulateRoll(); // Simulate dice being rolled
         player.roll(getRandomDice()); // Perform internal player dice and score additions that have to be synchronized
-        // Unlock the 5 seconds later (give time to player to read their score)
+
+        // Variable to store delay depending on whether the player is a bot or not
+        int delay = (player.isCpu()) ? 0 : 5;
+
+        // Unlock the 5 seconds later (give time to player to read their score if they are not a bot)
         RequestDispatcher.schedule(() -> {
             if (SnakeEyes.isFinished()) {
                 // Calculate the winning player using a maximum function
@@ -59,8 +63,12 @@ public class RollRequest implements Request {
 
             SnakeEyes.getScoreboard().refresh();
             SnakeEyes.getDiceboard().refreshUnrolled();
-            SwingUtilities.invokeLater(() -> SnakeEyes.getRollButton().allow()); // Allow button clicking
-        }, 5, TimeUnit.SECONDS);
+
+            if (!SnakeEyes.getPlayerOnTurn().isCpu() || SnakeEyes.isFinished()) { // Allow button clicking for humans only
+                SwingUtilities.invokeLater(() -> SnakeEyes.getRollButton().allow());
+            }
+
+        }, delay, TimeUnit.SECONDS);
     }
 
     /**

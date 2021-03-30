@@ -102,6 +102,10 @@ public final class PanelComponents {
             // Switch window context
             GamePanel.setComponents(MainWindow.getWindowPane());
             MainWindow.updateJFrame();
+            // If the first player is a bot, start automatically.
+            if (SnakeEyes.getPlayerOnTurn().isCpu()) {
+                new RollRequest(SnakeEyes.getPlayerOnTurn());
+            }
         });
         // Panel Styling and return
         panel.add(button);

@@ -1,11 +1,13 @@
 package personal.opensrcerer.util;
 
+import personal.opensrcerer.actions.RollRequest;
 import personal.opensrcerer.userInterface.panels.Banner;
 import personal.opensrcerer.userInterface.panels.Diceboard;
 import personal.opensrcerer.userInterface.panels.RollButton;
 import personal.opensrcerer.userInterface.panels.Scoreboard;
 import personal.opensrcerer.util.circularList.CircularLinkedList;
 
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -134,13 +136,18 @@ public final class SnakeEyes {
      * If it's the turn of the last player on the list, the round advances, or the game ends.
      */
     public static void nextTurn() {
+        Player previousPlayer = getPlayerOnTurn();
+
         nextPlayer(); // Go to the next player
 
-        /*if (players.isAtFirst()) { // If the list of players just looped once
-            if (nextRound() && getPlayerOnTurn().isCpu()) { // Advance the round
-                new RollRequest(getPlayerOnTurn()); // Roll the bot player automatically
+        if (!finished) {
+            // If previous player is not computer-player but the current one is, give the previous one time to read score
+            if (!previousPlayer.isCpu() && getPlayerOnTurn().isCpu()) {
+                RequestDispatcher.schedule(() -> new RollRequest(getPlayerOnTurn()), 5, TimeUnit.SECONDS);
+            } else if (getPlayerOnTurn().isCpu()) { // Otherwise just make a new roll request if only the current one is
+                RequestDispatcher.schedule(() -> new RollRequest(getPlayerOnTurn()), 100, TimeUnit.MILLISECONDS);
             }
-        }*/
+        }
     }
 
     /**
