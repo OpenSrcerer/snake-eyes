@@ -4,6 +4,7 @@ import personal.opensrcerer.util.ButtonType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
@@ -30,10 +31,33 @@ public class RollButton extends JPanel {
     }
 
     /**
-     * Toggle the availability of this button.
-     * This method is synchronized as it is accessed in a multithreaded context.
+     * Allows the clicking of this button.
+     * This method is synchronized as it is accessed in a multithreaded context and not making it such would cause
+     * different threads to toggle the button on/off.
      */
-    public synchronized void toggle() {
-        rollButton.setEnabled(!rollButton.isEnabled());
+    public synchronized void allow() {
+        rollButton.setEnabled(true);
+    }
+
+    /**
+     * Restricts the clicking of this button.
+     * This method is synchronized as it is accessed in a multithreaded context and not making it such would cause
+     * different threads to toggle the button on/off.
+     */
+    public synchronized void restrict() {
+        rollButton.setEnabled(false);
+    }
+
+    /**
+     * Changes the image and listener of this button to take the user back to the starting menu.
+     * This method is called once when the game is over.
+     */
+    public void convertToBackButton() {
+        // Remove all ActionListeners on the button (there's only one)
+        Arrays.stream(rollButton.getActionListeners()).forEach(rollButton::removeActionListener);
+        // Replace the button's image with the "back" image
+        rollButton.setIcon(PanelComponents.imagesList[13]);
+        // Add a new ActionListener to the button
+        rollButton.addActionListener(getListener(ButtonType.BACK));
     }
 }

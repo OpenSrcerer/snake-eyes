@@ -10,7 +10,6 @@ import personal.opensrcerer.RunProject;
 import personal.opensrcerer.actions.RollRequest;
 import personal.opensrcerer.userInterface.MainWindow;
 import personal.opensrcerer.util.ButtonType;
-import personal.opensrcerer.util.RequestDispatcher;
 import personal.opensrcerer.util.SnakeEyes;
 
 import javax.swing.*;
@@ -363,7 +362,7 @@ public final class PanelComponents {
      * @throws NullPointerException If retrieved image is null.
      */
     public static void initializeImages() {
-        imagesList = new ImageIcon[13];
+        imagesList = new ImageIcon[14];
         for (int index = 0; index < 6; ++index) {
             // Retrieve a resource stream using a base class as a reference point.
             imagesList[index] = new ImageIcon(RunProject.class.getResource("/resources/die" + (index + 1) + ".png"));
@@ -373,8 +372,9 @@ public final class PanelComponents {
         imagesList[8] = new ImageIcon(RunProject.class.getResource("/resources/speaker32m.png"));
         imagesList[9] = new ImageIcon(RunProject.class.getResource("/resources/skelly.png"));
         imagesList[10] = new ImageIcon(RunProject.class.getResource("/resources/dieq.png"));
-        imagesList[11] = new ImageIcon(RunProject.class.getResource("/resources/flamingdice.png"));
+        imagesList[11] = new ImageIcon(RunProject.class.getResource("/resources/roll.png"));
         imagesList[12] = new ImageIcon(RunProject.class.getResource("/resources/cursor.png"));
+        imagesList[13] = new ImageIcon(RunProject.class.getResource("/resources/back.png"));
     }
 
     /**
@@ -470,14 +470,20 @@ public final class PanelComponents {
                 MainWindow.updateJFrame();
             };
             case ROLL -> e -> {
-                // Initiate a new roll request when user presses button
+                // Initiate a new roll request
                 new RollRequest(SnakeEyes.getPlayerOnTurn());
             };
-            case EXIT -> e -> {
-                MainWindow.disposeJFrame();
-                RequestDispatcher.killExecutor();
+            case PLAY -> e -> {
+                // Empty Listener
             };
-            default -> throw new IllegalStateException("Unexpected value: " + type);
+            case BACK -> e -> {
+                // Remove elements
+                MainWindow.getWindowPane().removeAll();
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
+                // Switch window context
+                StartPanel.setComponents(MainWindow.getWindowPane());
+                MainWindow.updateJFrame();
+            };
         };
     }
 }

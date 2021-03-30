@@ -7,7 +7,15 @@ import java.awt.*;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
+/**
+ * The JPanel that contains every UI element that will be shown to the user while in-game.
+ */
 public class GamePanel {
+
+    /**
+     * Set all the components of the given ContentPane to the GamePanel components.
+     * @param pane ContentPane of MainWindow's JFrame.
+     */
     public static void setComponents(final Container pane) {
         JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
                 scoreboardPanel = getJPanel(BoxLayout.PAGE_AXIS),

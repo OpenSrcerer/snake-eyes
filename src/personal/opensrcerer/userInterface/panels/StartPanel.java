@@ -7,8 +7,15 @@ import java.awt.*;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
+/**
+ * The JPanel that contains every UI element that will be shown to the user while in-game.
+ */
 public class StartPanel {
 
+    /**
+     * Set all the components of the given ContentPane to the StartPanel components.
+     * @param pane ContentPane of MainWindow's JFrame.
+     */
     public static void setComponents(final Container pane) {
         JPanel playerList = getJPanel(BoxLayout.PAGE_AXIS);
         playerList.setPreferredSize(new Dimension(500, 320));

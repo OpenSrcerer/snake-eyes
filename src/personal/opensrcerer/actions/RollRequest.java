@@ -10,6 +10,7 @@ import personal.opensrcerer.util.Player;
 import personal.opensrcerer.util.RequestDispatcher;
 import personal.opensrcerer.util.SnakeEyes;
 
+import javax.swing.*;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,14 +36,13 @@ public class RollRequest implements Request {
 
     @Override
     public void run() {
-        SnakeEyes.getRollButton().toggle(); // Lock the button so the user does not click it relentlessly
+        // Lock the button so the user does not click it relentlessly
+        SwingUtilities.invokeLater(() -> SnakeEyes.getRollButton().restrict());
         SnakeEyes.getBanner().update("Rolling...");
         simulateRoll(); // Simulate dice being rolled
         player.roll(getRandomDice()); // Perform internal player dice and score additions that have to be synchronized
         // Unlock the 5 seconds later (give time to player to read their score)
         RequestDispatcher.schedule(() -> {
-            SnakeEyes.getRollButton().toggle();
-
             if (SnakeEyes.isFinished()) {
                 // Calculate the winning player using a maximum function
                 Optional<Player> winner = SnakeEyes.getPlayers().max(Comparator.comparing(Player::getScore));
@@ -59,6 +59,7 @@ public class RollRequest implements Request {
 
             SnakeEyes.getScoreboard().refresh();
             SnakeEyes.getDiceboard().refreshUnrolled();
+            SwingUtilities.invokeLater(() -> SnakeEyes.getRollButton().allow()); // Allow button clicking
         }, 5, TimeUnit.SECONDS);
     }
 

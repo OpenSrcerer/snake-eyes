@@ -167,7 +167,7 @@ public final class SnakeEyes {
             getPlayers().forEach(Player::resetStatus); // Resets the players' statuses to unrolled
             players.setToFirst(); // Give the turn to the first player
         } else {
-            System.out.println("Game has finished.");
+            rollButton.convertToBackButton();
             finished = true;
         }
     }

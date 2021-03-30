@@ -9,9 +9,6 @@ package personal.opensrcerer.util;
 /**
  * This enum is used to distinguish button types,
  * when creating different button action listeners.
- * For example, a Help type button will show a help JPanel, and
- * a Start button will initialize the factorial calculation JPanel.
- *
  * Using an enum makes it easy to distinguish these buttons by assigning
  * a ButtonType value to them.
  */
@@ -28,7 +25,7 @@ public enum ButtonType {
     CREDITS,
 
     /**
-     * Represents the "Start Game" button in the UI.
+     * Represents the "Play" button in the UI.
      */
     PLAY,
 
@@ -40,5 +37,5 @@ public enum ButtonType {
     /**
      * Represents the "Exit" button in the UI.
      */
-    EXIT,
+    BACK,
 }
