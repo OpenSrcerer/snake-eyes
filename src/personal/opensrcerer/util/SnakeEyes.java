@@ -171,7 +171,7 @@ public final class SnakeEyes {
     private static void nextRound() {
         if (currentRound < totalRounds) { // If the current round is at a lesser value than the total rounds
             currentRound++; // Advance to the next round
-            getPlayers().forEach(Player::resetStatus); // Resets the players' statuses to unrolled
+            getPlayers().forEach(player -> player.resetStatus(false)); // Resets the players' statuses to unrolled
             players.setToFirst(); // Give the turn to the first player
         } else {
             rollButton.convertToBackButton();

@@ -29,8 +29,11 @@ public class Banner extends JPanel {
      * Updates the banner's message to the preset default message.
      */
     public void update() {
-        bannerText.setText("Round (" + SnakeEyes.getCurrentRound() + "/" + SnakeEyes.getTotalRounds() + ") // Roll, " +
-                SnakeEyes.getPlayerOnTurn().getPlayerName() + "!");
+        // Show the round message if the current player is not a bot.
+        if (!SnakeEyes.getPlayerOnTurn().isCpu()) {
+            bannerText.setText("Round (" + SnakeEyes.getCurrentRound() + "/" + SnakeEyes.getTotalRounds() + ") // Roll, " +
+                    SnakeEyes.getPlayerOnTurn().getPlayerName() + "!");
+        }
         revalidate();
         repaint();
     }
@@ -39,8 +42,13 @@ public class Banner extends JPanel {
      * Updates the banner's message to a given String.
      * @param text Text to update this Banner to.
      */
-    public void update(String text) {
-        bannerText.setText(text);
+    public void update(String text, boolean skipForBots) {
+        // Show a custom message if the current player is not a bot.
+        if (!SnakeEyes.getPlayerOnTurn().isCpu()) {
+            bannerText.setText(text);
+        } else if (!skipForBots) {
+            bannerText.setText(text);
+        }
         revalidate();
         repaint();
     }

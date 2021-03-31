@@ -38,7 +38,7 @@ public class RollRequest implements Request {
     public void run() {
         // Lock the button so the user does not click it relentlessly
         SwingUtilities.invokeLater(() -> SnakeEyes.getRollButton().restrict());
-        SnakeEyes.getBanner().update("Rolling...");
+        SnakeEyes.getBanner().update(this.player.getPlayerName() + " is rolling...", false);
         simulateRoll(); // Simulate dice being rolled
         player.roll(getRandomDice()); // Perform internal player dice and score additions that have to be synchronized
 
@@ -53,11 +53,12 @@ public class RollRequest implements Request {
                 // If the Optional value is not null
                 if (winner.isPresent()) {
                     // Show winner banner
-                    SnakeEyes.getBanner().update("The game has finished! Winner: " + winner.get().getPlayerName());
+                    SnakeEyes.getBanner().update("The game has finished! Winner: " + winner.get().getPlayerName(), false);
                 } else {
-                    SnakeEyes.getBanner().update("The game has finished!"); // Show generic game ended banner
+                    SnakeEyes.getBanner().update("The game has finished!", false); // Show generic game ended banner
                 }
             } else {
+                // Show roll message if next player is not a bot.
                 SnakeEyes.getBanner().update();
             }
 

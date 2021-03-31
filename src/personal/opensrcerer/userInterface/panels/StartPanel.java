@@ -13,10 +13,11 @@ import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 public class StartPanel {
 
     /**
-     * Set all the components of the given ContentPane to the StartPanel components.
-     * @param pane ContentPane of MainWindow's JFrame.
+     * Singleton startPanel instance.
      */
-    public static void setComponents(final Container pane) {
+    private static final JPanel startPanel;
+
+    static {
         JPanel playerList = getJPanel(BoxLayout.PAGE_AXIS);
         playerList.setPreferredSize(new Dimension(500, 320));
         playerList.setBorder(getBorder("Player List"));
@@ -24,8 +25,7 @@ public class StartPanel {
         PlayerComboBox<Integer> playersBox = new PlayerComboBox<>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}, playerList);
         JComboBox<Integer> roundsBox = getComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-        JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
-                selections = getJPanel(BoxLayout.PAGE_AXIS),
+        JPanel selections = getJPanel(BoxLayout.PAGE_AXIS),
                 titlePanel = getJPanel(BoxLayout.PAGE_AXIS),
                 buttonPanel = getJPanel(BoxLayout.LINE_AXIS),
                 playButton = getPlayButton(playersBox, roundsBox),
@@ -33,6 +33,7 @@ public class StartPanel {
                 creditsButton = getBorderedButton("Credits", ButtonType.CREDITS),
                 playersSelection = getJPanel(),
                 roundsSelection = getJPanel();
+        startPanel = getJPanel(BoxLayout.PAGE_AXIS);
 
         playButton.setPreferredSize(new Dimension(75, 75));
         helpButton.setPreferredSize(new Dimension(75, 75));
@@ -55,14 +56,20 @@ public class StartPanel {
         titlePanel.add(getLogo());
         titlePanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        totalPanel.add(titlePanel);
-        totalPanel.add(getSeparator());
-        totalPanel.add(buttonPanel);
-        totalPanel.add(getSeparator());
-        totalPanel.add(selections);
-        totalPanel.add(playerList);
-        totalPanel.add(getBottomPanel());
+        startPanel.add(titlePanel);
+        startPanel.add(getSeparator());
+        startPanel.add(buttonPanel);
+        startPanel.add(getSeparator());
+        startPanel.add(selections);
+        startPanel.add(playerList);
+        startPanel.add(getBottomPanel());
+    }
 
-        pane.add(totalPanel);
+    /**
+     * Set all the components of the given ContentPane to the StartPanel components.
+     * @param pane ContentPane of MainWindow's JFrame.
+     */
+    public static void setComponents(final Container pane) {
+        pane.add(startPanel);
     }
 }

@@ -486,6 +486,8 @@ public final class PanelComponents {
                 MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
                 // Switch window context
                 StartPanel.setComponents(MainWindow.getWindowPane());
+                // Reset the players' scores
+                SnakeEyes.getPlayers().forEach(player -> player.resetStatus(true));
                 MainWindow.updateJFrame();
             };
         };
