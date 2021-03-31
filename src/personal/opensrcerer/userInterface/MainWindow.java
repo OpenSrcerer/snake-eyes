@@ -42,9 +42,9 @@ public final class MainWindow extends JFrame {
         clip = null;
         try {
             // Initialize Audio
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(RunProject.class.getResource("/resources/music.wav"));
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(RunProject.class.getResource("/resources/highrollers.wav"));
             clip = AudioSystem.getClip();
-            //clip.open(audioIn);
+            clip.open(audioIn);
             // Initialize used images
             PanelComponents.initializeImages();
             // Set singleton item
@@ -56,7 +56,7 @@ public final class MainWindow extends JFrame {
             // Show the GUI
             createAndShowGUI();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println("Something went wrong! " + ex.getMessage());
         }
     }
 
