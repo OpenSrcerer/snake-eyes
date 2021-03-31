@@ -38,4 +38,9 @@ public enum ButtonType {
      * Represents the "Exit" button in the UI.
      */
     BACK,
+
+    /**
+     * Represents the "Exit" button in the UI.
+     */
+    ROLL_BACK
 }

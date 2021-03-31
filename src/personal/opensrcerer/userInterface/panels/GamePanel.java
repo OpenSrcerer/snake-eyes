@@ -17,7 +17,7 @@ public class GamePanel {
      * @param pane ContentPane of MainWindow's JFrame.
      */
     public static void setComponents(final Container pane) {
-        JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
+        final JPanel totalPanel = getJPanel(BoxLayout.PAGE_AXIS),
                 scoreboardPanel = getJPanel(BoxLayout.PAGE_AXIS),
                 gamePanelSep = getJPanel(BoxLayout.PAGE_AXIS),
                 wholeSep = getJPanel(BoxLayout.LINE_AXIS),

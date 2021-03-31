@@ -58,6 +58,6 @@ public class RollButton extends JPanel {
         // Replace the button's image with the "back" image
         rollButton.setIcon(PanelComponents.imagesList[13]);
         // Add a new ActionListener to the button
-        rollButton.addActionListener(getListener(ButtonType.BACK));
+        rollButton.addActionListener(getListener(ButtonType.ROLL_BACK));
     }
 }

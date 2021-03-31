@@ -366,7 +366,7 @@ public final class PanelComponents {
      * @throws NullPointerException If retrieved image is null.
      */
     public static void initializeImages() {
-        imagesList = new ImageIcon[14];
+        imagesList = new ImageIcon[15];
         for (int index = 0; index < 6; ++index) {
             // Retrieve a resource stream using a base class as a reference point.
             imagesList[index] = new ImageIcon(RunProject.class.getResource("/resources/die" + (index + 1) + ".png"));
@@ -379,6 +379,7 @@ public final class PanelComponents {
         imagesList[11] = new ImageIcon(RunProject.class.getResource("/resources/roll.png"));
         imagesList[12] = new ImageIcon(RunProject.class.getResource("/resources/cursor.png"));
         imagesList[13] = new ImageIcon(RunProject.class.getResource("/resources/back.png"));
+        imagesList[14] = new ImageIcon(RunProject.class.getResource("/resources/helpChart.png"));
     }
 
     /**
@@ -398,6 +399,11 @@ public final class PanelComponents {
             @Override
             public void mouseExited(MouseEvent evt) {
                 MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
+                component.setBackground(discordGray);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent evt) {
                 component.setBackground(discordGray);
             }
         });
@@ -469,9 +475,17 @@ public final class PanelComponents {
         //        Pack JFrame & Repaint
 
         return switch (type) {
-            case HELP, CREDITS -> e -> {
-                // TODO
-                MainWindow.updateJFrame();
+            case HELP -> e -> {
+                MainWindow.getWindowPane().removeAll(); // Remove elements
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor()); // Update cursor
+                HelpPanel.setComponents(MainWindow.getWindowPane()); // Switch window context
+                MainWindow.updateJFrame(); // Refresh frame
+            };
+            case CREDITS -> e -> {
+                MainWindow.getWindowPane().removeAll(); // Remove elements
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor()); // Update cursor
+                CreditsPanel.setComponents(MainWindow.getWindowPane()); // Switch window context
+                MainWindow.updateJFrame(); // Refresh frame
             };
             case ROLL -> e -> {
                 // Initiate a new roll request
@@ -481,14 +495,17 @@ public final class PanelComponents {
                 // Empty Listener
             };
             case BACK -> e -> {
-                // Remove elements
-                MainWindow.getWindowPane().removeAll();
-                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-                // Switch window context
-                StartPanel.setComponents(MainWindow.getWindowPane());
-                // Reset the players' scores
-                SnakeEyes.getPlayers().forEach(player -> player.resetStatus(true));
-                MainWindow.updateJFrame();
+                MainWindow.getWindowPane().removeAll(); // Remove elements
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor()); // Update cursor
+                StartPanel.setComponents(MainWindow.getWindowPane()); // Switch window context
+                MainWindow.updateJFrame(); // Refresh frame
+            };
+            case ROLL_BACK -> e -> {
+                MainWindow.getWindowPane().removeAll(); // Remove elements
+                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor()); // Update cursor
+                StartPanel.setComponents(MainWindow.getWindowPane()); // Switch window context
+                SnakeEyes.getPlayers().forEach(player -> player.resetStatus(true)); // Reset the players' scores
+                MainWindow.updateJFrame(); // Refresh frame
             };
         };
     }

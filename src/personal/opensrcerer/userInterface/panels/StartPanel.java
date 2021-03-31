@@ -25,7 +25,7 @@ public class StartPanel {
         PlayerComboBox<Integer> playersBox = new PlayerComboBox<>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}, playerList);
         JComboBox<Integer> roundsBox = getComboBox(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-        JPanel selections = getJPanel(BoxLayout.PAGE_AXIS),
+        final JPanel selections = getJPanel(BoxLayout.PAGE_AXIS),
                 titlePanel = getJPanel(BoxLayout.PAGE_AXIS),
                 buttonPanel = getJPanel(BoxLayout.LINE_AXIS),
                 playButton = getPlayButton(playersBox, roundsBox),
