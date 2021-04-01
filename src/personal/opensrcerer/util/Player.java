@@ -67,6 +67,8 @@ public class Player extends JPanel {
      * @param dice The dice that were just rolled.
      */
     public synchronized void roll(short[] dice) {
+        // Increase the number of rolls that were made
+        ++consecutiveRolls;
         // Show dies that were just rolled to the player(s)
         SnakeEyes.getDiceboard().refresh(dice);
         // Calculate the sum of the dice
@@ -111,8 +113,6 @@ public class Player extends JPanel {
             throw new IllegalArgumentException("Player who has finished the round cannot be rolling!");
         }
 
-        // Increase the number of rolls that were made
-        ++consecutiveRolls;
         SnakeEyes.getScoreboard().refresh();
         SnakeEyes.getDiceboard().refresh(dice);
         SnakeEyes.nextTurn();
