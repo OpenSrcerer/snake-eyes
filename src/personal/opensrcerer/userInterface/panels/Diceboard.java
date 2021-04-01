@@ -14,6 +14,9 @@ import java.awt.*;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
+/**
+ * The JPanel that displays the player's current dice.
+ */
 public class Diceboard extends JPanel {
 
     /**
@@ -91,6 +94,7 @@ public class Diceboard extends JPanel {
 
     /**
      * Update the dynamic elements of this Diceboard.
+     * @param rollDice The dice to show in the "Current Dice" panel.
      */
     public void updateElements(short[] rollDice) {
         Player player = SnakeEyes.getPlayerOnTurn();

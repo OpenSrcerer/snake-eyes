@@ -28,6 +28,7 @@ public class RollRequest implements Request {
     /**
      * Create a new RollRequest object and put it in the
      * Request queue.
+     * @param player The player that initialized this request.
      */
     public RollRequest(Player player) {
         this.player = player;

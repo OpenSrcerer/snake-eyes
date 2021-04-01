@@ -16,6 +16,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * The main and only JFrame that the GUI uses.
@@ -31,6 +32,9 @@ public final class MainWindow extends JFrame {
      */
     private static Clip clip;
 
+    /**
+     * Create a new instance of the Snake Eyes Game window.
+     */
     public MainWindow() {
         super("The One and Only Snake Eyes Game");
 
@@ -47,7 +51,11 @@ public final class MainWindow extends JFrame {
             // Show the GUI
             createAndShowGUI();
         } catch (Exception ex) {
-            System.out.println("Something went wrong! " + ex.getMessage());
+            // Show an error message with details
+            StringBuilder trace = new StringBuilder();
+            Arrays.stream(ex.getStackTrace()).forEach(element -> trace.append(element.toString()).append("\n"));
+            JOptionPane.showMessageDialog(this, "Something went wrong with initialization! Error message: "
+                    + ex.getMessage() + "\nStack trace:\n" + trace.toString(), "Initialization Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

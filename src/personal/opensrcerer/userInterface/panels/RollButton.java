@@ -14,6 +14,9 @@ import java.util.Arrays;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
+/**
+ * A JPanel-based RollButton with a custom image that can be converted to a back button.
+ */
 public class RollButton extends JPanel {
 
     /**

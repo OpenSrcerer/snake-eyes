@@ -38,14 +38,36 @@ public final class PanelComponents {
             discordGray = new Color(54, 57, 63),
             discordGrayer = new Color(47, 49, 54);
 
+    /**
+     * Font used for messages to the player.
+     */
     public static final Font bigTitleFont = new Font("Century Gothic", Font.BOLD, 30);
+
+    /**
+     * Used for large buttons, etc.
+     */
     public static final Font titleFont = new Font("Century Gothic", Font.BOLD, 20);
+
+    /**
+     * Used for small descriptions.
+     */
     public static final Font descriptionFont = new Font("Century Gothic", Font.PLAIN, 14);
+
+    /**
+     * Used for small buttons.
+     */
     private static final Font actionFont = new Font("Arial", Font.BOLD, 15);
+
+    /**
+     * Used for TextFields.
+     */
     private static final Font outputFont = new Font("Arial", Font.ITALIC, 13);
     // -------------------------------------------
 
     // -------- Images --------
+    /**
+     * A list of static images that is used throughout the program.
+     */
     static ImageIcon[] imagesList;
     // ------------------------
 
@@ -294,6 +316,7 @@ public final class PanelComponents {
 
     /**
      * @return A customized JSlider to use as the music slider.
+     * @param listener The listener to attach to this slider.
      */
     public static JSlider getSlider(ChangeListener listener) {
         JSlider slider = new JSlider();

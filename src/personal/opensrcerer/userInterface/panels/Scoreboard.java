@@ -15,8 +15,14 @@ import java.awt.*;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 
+/**
+ * Displays the score of every player in an ordered way, also showing whose turn it is using a cursor.
+ */
 public class Scoreboard extends JPanel {
 
+    /**
+     * Inner class used to better manage instances of players in the scoreboard.
+     */
     public static final class ScoreboardPlayer extends JPanel {
         /**
          * The Player object that contains data for this ScoreboardPlayer object.
@@ -33,6 +39,10 @@ public class Scoreboard extends JPanel {
          */
         private final JLabel cursor;
 
+        /**
+         * Create a new ScoreboardPlayer based on the given player.
+         * @param player Given player to create from.
+         */
         private ScoreboardPlayer(Player player) {
             super();
             setBackground(discordGrayer);

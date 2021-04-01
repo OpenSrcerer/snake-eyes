@@ -45,6 +45,7 @@ public class CircularLinkedList<X> {
 
     /**
      * Construct a new CircularLinkedList from an array.
+     * @param elements The array that contains the elements this list will start out with.
      */
     public CircularLinkedList(X[] elements) {
         Arrays.stream(elements).forEach(this::add);
@@ -120,6 +121,7 @@ public class CircularLinkedList<X> {
 
     /**
      * @return The number of elements in this list that satisfy the given Predicate.
+     * @param predicate Given predicate to evaluate for every element.
      */
     public int getElementsThat(Predicate<X> predicate) {
         return (int) getAll().stream().filter(predicate).count();
@@ -130,6 +132,7 @@ public class CircularLinkedList<X> {
      * that satisfy the given Predicate. Returns true upon successfully finding a match.
      * If the list is looped fully and an element is not found, this method returns false.
      * @return True if successfully set, false otherwise.
+     * @param predicate Given predicate to evaluate for all next elements until one matches.
      */
     public boolean advanceTo(Predicate<X> predicate) {
         for (int index = 0; index < size; ++index) {

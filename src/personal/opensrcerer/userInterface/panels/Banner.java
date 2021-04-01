@@ -23,6 +23,9 @@ public class Banner extends JPanel {
      */
     private final JLabel bannerText;
 
+    /**
+     * Create a new preset banner.
+     */
     public Banner() {
         super();
         setBackground(discordGrayer);
@@ -47,6 +50,7 @@ public class Banner extends JPanel {
     /**
      * Updates the banner's message to a given String.
      * @param text Text to update this Banner to.
+     * @param skipForBots Whether the message should be skipped if the user is a bot.
      */
     public void update(String text, boolean skipForBots) {
         // Show a custom message if the current player is not a bot.

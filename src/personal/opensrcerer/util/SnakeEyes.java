@@ -63,7 +63,9 @@ public abstract class SnakeEyes {
     private static boolean finished;
 
     /**
-     * Resets the singleton instance of the ongoing game.
+     * Resets the data for the ongoing game.
+     * @param players Players that will play in the new game.
+     * @param totalRounds The total number of rounds in the new game.
      */
     public static void resetGame(Player[] players, int totalRounds) {
         // Values first
@@ -76,9 +78,6 @@ public abstract class SnakeEyes {
         SnakeEyes.banner = new Banner();
         SnakeEyes.diceboard = new Diceboard();
         SnakeEyes.scoreboard = new Scoreboard();
-    }
-
-    private SnakeEyes() {
     }
 
     /**
