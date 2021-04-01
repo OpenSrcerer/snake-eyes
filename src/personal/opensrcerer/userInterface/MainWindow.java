@@ -48,6 +48,8 @@ public final class MainWindow extends JFrame {
             PanelComponents.initializeImages();
             // Set singleton item
             window = this;
+            // Set logo for window
+            setIconImage(PanelComponents.getIcon(15).getImage());
             // Show the GUI
             createAndShowGUI();
         } catch (Exception ex) {
@@ -56,6 +58,7 @@ public final class MainWindow extends JFrame {
             Arrays.stream(ex.getStackTrace()).forEach(element -> trace.append(element.toString()).append("\n"));
             JOptionPane.showMessageDialog(this, "Something went wrong with initialization! Error message: "
                     + ex.getMessage() + "\nStack trace:\n" + trace.toString(), "Initialization Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
         }
     }
 

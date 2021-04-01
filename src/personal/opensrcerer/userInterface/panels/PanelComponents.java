@@ -156,6 +156,14 @@ public final class PanelComponents {
     }
 
     /**
+     * @param iconIndex Index of the icon in the images array.
+     * @return A selected ImageIcon.
+     */
+    public static ImageIcon getIcon(int iconIndex) {
+        return imagesList[iconIndex];
+    }
+
+    /**
      * Changes a given button's theme to match the discord theme.
      * Takes advantage of Swing's HTML support.
      * @param buttonName String to change the button name to.
@@ -350,7 +358,7 @@ public final class PanelComponents {
      * @throws NullPointerException If retrieved image is null.
      */
     public static void initializeImages() {
-        imagesList = new ImageIcon[15];
+        imagesList = new ImageIcon[16];
         for (int index = 0; index < 6; ++index) {
             // Retrieve a resource stream using a base class as a reference point.
             imagesList[index] = new ImageIcon(RunProject.class.getResource("/resources/die" + (index + 1) + ".png"));
@@ -364,6 +372,7 @@ public final class PanelComponents {
         imagesList[12] = new ImageIcon(RunProject.class.getResource("/resources/cursor.png"));
         imagesList[13] = new ImageIcon(RunProject.class.getResource("/resources/back.png"));
         imagesList[14] = new ImageIcon(RunProject.class.getResource("/resources/helpChart.png"));
+        imagesList[15] = new ImageIcon(RunProject.class.getResource("/resources/goldenDie.png"));
     }
 
     /**
