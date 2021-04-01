@@ -81,9 +81,7 @@ public class Scoreboard extends JPanel {
         }
         // Add RigidArea of a predefined size
         add(Box.createRigidArea(new Dimension(0, 329 - (SnakeEyes.size() * 37))));
-
         setBorder(PanelComponents.getBorder("Scoreboard // Round " + SnakeEyes.getCurrentRound()));
-        // TODO UPDATE FLICKERING PROBLEM
     }
 
     /**
