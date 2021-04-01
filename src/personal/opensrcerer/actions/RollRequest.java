@@ -1,7 +1,7 @@
 /*
- * Made for the Final Project in CS105, due December 4th 2020. <br>
+ * Made for the Final Project in CS106, due April 1st 2021. <br>
  * This work is licensed under the GNU General Public License v3.0 <br>
- * GNU © 2020 Daniel Stefani / OpenSrcerer
+ * GNU © 2021 Daniel Stefani / OpenSrcerer
  */
 
 package personal.opensrcerer.actions;
@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Add description here
+ * A Runnable that is processed from the dispatcher.
  */
 public class RollRequest implements Request {
     /**

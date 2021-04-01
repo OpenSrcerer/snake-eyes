@@ -1,7 +1,7 @@
 /*
- * Made for the Final Project in CS105, due December 4th 2020. <br>
+ * Made for the Final Project in CS106, due April 1st 2021. <br>
  * This work is licensed under the GNU General Public License v3.0 <br>
- * GNU © 2020 Daniel Stefani / OpenSrcerer
+ * GNU © 2021 Daniel Stefani / OpenSrcerer
  */
 
 package personal.opensrcerer.userInterface;
@@ -106,12 +106,5 @@ public final class MainWindow extends JFrame {
         window.revalidate(); // Mark JFrame as "dirty"
         window.repaint();
         window.setLocationRelativeTo(null); // Center window
-    }
-
-    /**
-     * Dispose of the window and exit the program.
-     */
-    public static void disposeJFrame() {
-        window.dispose();
     }
 }

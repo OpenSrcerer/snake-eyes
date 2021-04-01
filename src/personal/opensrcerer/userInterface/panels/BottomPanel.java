@@ -1,3 +1,9 @@
+/*
+ * Made for the Final Project in CS106, due April 1st 2021. <br>
+ * This work is licensed under the GNU General Public License v3.0 <br>
+ * GNU © 2021 Daniel Stefani / OpenSrcerer
+ */
+
 package personal.opensrcerer.userInterface.panels;
 
 import personal.opensrcerer.userInterface.MainWindow;
@@ -64,6 +70,10 @@ public class BottomPanel extends JPanel {
         refresh();
     }
 
+    /**
+     * Update the speaker to mute if volume is 0, unmute otherwise.
+     * @param volume Given volume to adjust with.
+     */
     private void updateSpeaker(float volume) {
         if (volume == 0f) {
             speakerButton.setIcon(imagesList[8]); // Set mute speaker
@@ -102,6 +112,9 @@ public class BottomPanel extends JPanel {
         };
     }
 
+    /**
+     * Refresh the values for the slider and button in this BottomPanel.
+     */
     public void refresh() {
         slider.setValue(sliderPosition);
         if (isMute()) {

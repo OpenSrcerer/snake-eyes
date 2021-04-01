@@ -1,3 +1,9 @@
+/*
+ * Made for the Final Project in CS106, due April 1st 2021. <br>
+ * This work is licensed under the GNU General Public License v3.0 <br>
+ * GNU © 2021 Daniel Stefani / OpenSrcerer
+ */
+
 package personal.opensrcerer.util;
 
 import personal.opensrcerer.actions.RollRequest;
@@ -12,9 +18,9 @@ import java.util.stream.Stream;
 
 /**
  * Represents one full SnakeEyes game.
- * Uses the Singleton design pattern.
+ * Everything is static as instantiation does not make sense here.
  */
-public final class SnakeEyes {
+public abstract class SnakeEyes {
 
     /**
      * The Roll Button for this game.

@@ -1,7 +1,7 @@
 /*
- * Made for the Final Project in CS105, due December 4th 2020. <br>
+ * Made for the Final Project in CS106, due April 1st 2021. <br>
  * This work is licensed under the GNU General Public License v3.0 <br>
- * GNU © 2020 Daniel Stefani / OpenSrcerer
+ * GNU © 2021 Daniel Stefani / OpenSrcerer
  */
 
 package personal.opensrcerer.userInterface.panels;
@@ -16,7 +16,7 @@ import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
 /**
  * Holds the components for the Help UI menu.
  */
-public final class HelpPanel {
+public abstract class HelpPanel {
 
     /**
      * The final panel for the help components.

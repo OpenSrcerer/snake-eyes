@@ -1,7 +1,7 @@
 /*
- * Made for the Final Project in CS105, due December 4th 2020. <br>
+ * Made for the Final Project in CS106, due April 1st 2021. <br>
  * This work is licensed under the GNU General Public License v3.0 <br>
- * GNU © 2020 Daniel Stefani / OpenSrcerer
+ * GNU © 2021 Daniel Stefani / OpenSrcerer
  */
 
 package personal.opensrcerer.util;
@@ -35,12 +35,12 @@ public enum ButtonType {
     ROLL,
 
     /**
-     * Represents the "Exit" button in the UI.
+     * Represents the "Back" button in the UI, after games have finished.
      */
     BACK,
 
     /**
-     * Represents the "Exit" button in the UI.
+     * Represents the "Back" button in the UI in help menus.
      */
     ROLL_BACK
 }
