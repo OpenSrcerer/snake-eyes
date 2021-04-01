@@ -27,14 +27,9 @@ public final class MainWindow extends JFrame {
     private static MainWindow window;
 
     /**
-     * The JPanel used globally on the bottom bar that manages music.
-     */
-    private static JPanel musicPanel;
-
-    /**
      * The Audio Clip that loops in the program.
      */
-    private Clip clip;
+    private static Clip clip;
 
     public MainWindow() {
         super("The One and Only Snake Eyes Game");
@@ -49,10 +44,6 @@ public final class MainWindow extends JFrame {
             PanelComponents.initializeImages();
             // Set singleton item
             window = this;
-            // Set the singleton panel
-            musicPanel = PanelComponents.getJPanel();
-            musicPanel.add(PanelComponents.getSlider());
-            musicPanel.add(PanelComponents.getSpeakerUnmute());
             // Show the GUI
             createAndShowGUI();
         } catch (Exception ex) {
@@ -85,39 +76,18 @@ public final class MainWindow extends JFrame {
      * Sets the volume of the playing clip - first turning the volume from a linear to a logarithmic scale.
      * @param volume The linear amount of volume to use.
      */
-    public static void setVolume(float volume, JSlider slider) {
-        if (volume == 0f) {
-            musicPanel.removeAll();
-            musicPanel.add(slider);
-            musicPanel.add(PanelComponents.getSpeakerMute());
-            musicPanel.revalidate();
-            musicPanel.repaint();
-        } else if (isMute() && volume > 0f) {
-            musicPanel.removeAll();
-            musicPanel.add(slider);
-            musicPanel.add(PanelComponents.getSpeakerUnmute());
-            musicPanel.revalidate();
-            musicPanel.repaint();
-        }
-
+    public static void setVolume(float volume) {
         // FloatControl uses a logarithmic amplitude! Corresponding linear multiplier:
         // pow(10.0, gainDB/20.0)
-        FloatControl volumeControl = (FloatControl) window.clip.getControl(FloatControl.Type.MASTER_GAIN);
+        FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         volumeControl.setValue((float) Math.log10(volume) * 20f); // Linear applied in reverse
-    }
-
-    /**
-     * @return The MusicPanel for this window.
-     */
-    public static JPanel getMusicPanel() {
-        return musicPanel;
     }
 
     /**
      * @return Whether the clip file is currently muted.
      */
     public static boolean isMute() {
-        FloatControl gainControl = (FloatControl) window.clip.getControl(FloatControl.Type.MASTER_GAIN);
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         return ((float) Math.pow(10f, gainControl.getValue() / 20f)) <= 1.0E-3f;
     }
 

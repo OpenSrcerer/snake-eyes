@@ -23,10 +23,16 @@ public final class HelpPanel {
      */
     private static final JPanel helpPanel;
 
+    /**
+     * Bottom panel instance.
+     */
+    private static final BottomPanel bottomPanel;
+
     static {
         final JPanel infoPanel = getJPanel(BoxLayout.PAGE_AXIS);
         final JPanel buttonPanel = getJPanel();
         helpPanel = getJPanel();
+        bottomPanel = new BottomPanel();
 
         buttonPanel.add(getButton("Back", ButtonType.BACK));
 
@@ -35,7 +41,7 @@ public final class HelpPanel {
         infoPanel.add(helpLabel);
         infoPanel.add(buttonPanel);
         infoPanel.add(getSeparator());
-        infoPanel.add(getBottomPanel());
+        infoPanel.add(bottomPanel);
 
         helpPanel.add(infoPanel);
     }
@@ -46,5 +52,6 @@ public final class HelpPanel {
      */
     public static void setComponents(final Container pane) {
         pane.add(helpPanel);
+        bottomPanel.refresh();
     }
 }

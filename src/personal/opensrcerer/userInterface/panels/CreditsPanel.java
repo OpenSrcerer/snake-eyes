@@ -9,6 +9,7 @@ package personal.opensrcerer.userInterface.panels;
 import personal.opensrcerer.util.ButtonType;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 import static personal.opensrcerer.userInterface.panels.PanelComponents.*;
@@ -23,11 +24,17 @@ public final class CreditsPanel {
      */
     private static final JPanel creditsPanel;
 
+    /**
+     * Bottom panel instance.
+     */
+    private static final BottomPanel bottomPanel;
+
     static {
         final JPanel infoPanel = getJPanel(BoxLayout.PAGE_AXIS);
         final JPanel imagePanel = getJPanel();
         final JPanel buttonPanel = getJPanel();
         creditsPanel = getJPanel(BoxLayout.PAGE_AXIS);
+        bottomPanel = new BottomPanel();
 
         imagePanel.add(getImageLabel(1));
         buttonPanel.add(getButton("Back", ButtonType.BACK));
@@ -42,7 +49,9 @@ public final class CreditsPanel {
         creditsPanel.add(imagePanel);
         creditsPanel.add(infoPanel);
         creditsPanel.add(getSeparator());
-        creditsPanel.add(getBottomPanel());
+        creditsPanel.add(bottomPanel);
+
+        creditsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
     /**
@@ -51,5 +60,6 @@ public final class CreditsPanel {
      */
     public static void setComponents(final Container pane) {
         pane.add(creditsPanel);
+        bottomPanel.refresh();
     }
 }

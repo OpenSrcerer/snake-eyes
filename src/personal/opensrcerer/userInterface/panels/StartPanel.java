@@ -17,6 +17,11 @@ public class StartPanel {
      */
     private static final JPanel startPanel;
 
+    /**
+     * Bottom panel instance.
+     */
+    private static final BottomPanel bottomPanel;
+
     static {
         JPanel playerList = getJPanel(BoxLayout.PAGE_AXIS);
         playerList.setPreferredSize(new Dimension(500, 320));
@@ -34,6 +39,7 @@ public class StartPanel {
                 playersSelection = getJPanel(),
                 roundsSelection = getJPanel();
         startPanel = getJPanel(BoxLayout.PAGE_AXIS);
+        bottomPanel = new BottomPanel();
 
         playButton.setPreferredSize(new Dimension(75, 75));
         helpButton.setPreferredSize(new Dimension(75, 75));
@@ -62,7 +68,7 @@ public class StartPanel {
         startPanel.add(getSeparator());
         startPanel.add(selections);
         startPanel.add(playerList);
-        startPanel.add(getBottomPanel());
+        startPanel.add(bottomPanel);
     }
 
     /**
@@ -71,5 +77,6 @@ public class StartPanel {
      */
     public static void setComponents(final Container pane) {
         pane.add(startPanel);
+        bottomPanel.refresh();
     }
 }

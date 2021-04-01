@@ -51,7 +51,7 @@ public class GamePanel {
         totalPanel.add(getSeparator());
         totalPanel.add(gridPanel);
         totalPanel.add(getSeparator());
-        totalPanel.add(getBottomPanel());
+        totalPanel.add(new BottomPanel());
 
         pane.add(totalPanel);
     }

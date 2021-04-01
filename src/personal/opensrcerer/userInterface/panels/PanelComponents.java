@@ -15,6 +15,7 @@ import personal.opensrcerer.util.SnakeEyes;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -285,28 +286,6 @@ public final class PanelComponents {
      * @return A custom JLabel that is constructed with
      * a png instead of text.
      */
-    public static JLabel getSpeakerUnmute() {
-        JLabel speaker = new JLabel(imagesList[7]);
-        speaker.setBackground(discordGrayer);
-        setSpeakerListener(speaker);
-        return speaker;
-    }
-
-    /**
-     * @return A custom JLabel that is constructed with
-     * a png instead of text.
-     */
-    public static JLabel getSpeakerMute() {
-        JLabel speaker = new JLabel(imagesList[8]);
-        speaker.setBackground(discordGrayer);
-        setSpeakerListener(speaker);
-        return speaker;
-    }
-
-    /**
-     * @return A custom JLabel that is constructed with
-     * a png instead of text.
-     */
     public static JLabel getCursor() {
         JLabel cursor = new JLabel(imagesList[12]);
         cursor.setBackground(discordGrayer);
@@ -316,7 +295,7 @@ public final class PanelComponents {
     /**
      * @return A customized JSlider to use as the music slider.
      */
-    public static JSlider getSlider() {
+    public static JSlider getSlider(ChangeListener listener) {
         JSlider slider = new JSlider();
         slider.setMaximum(100);
         slider.setMinimum(0);
@@ -325,26 +304,8 @@ public final class PanelComponents {
         slider.setBackground(discordGrayer);
         slider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         slider.setPreferredSize(new Dimension(50, 25));
-
-        slider.addChangeListener(e -> {
-            if (slider.getValueIsAdjusting()) {
-                return;
-            }
-            float volume = slider.getValue() / 100f;
-            MainWindow.setVolume(volume, slider);
-        });
-
+        slider.addChangeListener(listener);
         return slider;
-    }
-
-    /**
-     * @return The bottom panel containing volume controls and other info.
-     */
-    public static JPanel getBottomPanel() {
-        JPanel bottomPanel = PanelComponents.getJPanel(new BorderLayout());
-        bottomPanel.add(MainWindow.getMusicPanel(), BorderLayout.EAST);
-        bottomPanel.add(PanelComponents.getLabel("  v0.0.1", descriptionFont), BorderLayout.WEST);
-        return bottomPanel;
     }
 
     /**
@@ -425,37 +386,6 @@ public final class PanelComponents {
             @Override
             public void mouseExited(MouseEvent evt) {
                 MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-            }
-        });
-    }
-
-    /**
-     * Function that sets a mouse listener to speaker labels.
-     * @param component The button to add a listener to.
-     */
-    public static void setSpeakerListener(JComponent component) {
-        component.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent evt) {
-                MainWindow.getWindowPane().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent evt) {
-                MainWindow.getWindowPane().setCursor(Cursor.getDefaultCursor());
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                JSlider slider = PanelComponents.getSlider();
-
-                if (MainWindow.isMute()) {
-                    slider.setValue(25);
-                    MainWindow.setVolume(0.25f, slider);
-                } else {
-                    slider.setValue(0);
-                    MainWindow.setVolume(0f, slider);
-                }
             }
         });
     }
